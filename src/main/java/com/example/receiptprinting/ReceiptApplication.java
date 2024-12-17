@@ -16,20 +16,26 @@ public class ReceiptApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        //Creating a Webserver to access database
+        PropertyFileLoader propertyFileLoader = PropertyFileLoader.getInstance();
+        propertyFileLoader.loadProperty("config");
+        String port = propertyFileLoader.getProperty("port");
+        System.out.println(port);
         try {
-            Server server = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8081").start();
+            Server server = Server.createWebServer("-web", "-webAllowOthers", "-webPort", port).start();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("H2 Console started at http://localhost:8081");
+        System.out.println("H2 Console started at http://localhost:" + port);
+
+
+        //Loading FXML file to create the application window
         FXMLLoader fxmlLoader = new FXMLLoader(ReceiptApplication.class.getResource("Form.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        PropertyFileLoader propertyFileLoader = PropertyFileLoader.getInstance();
-        propertyFileLoader.loadProperty("config");
         stage.setTitle(propertyFileLoader.getProperty("companyName"));
         stage.setScene(scene);
-
         stage.setOnCloseRequest(event -> {
             if (CommonUtils.confirmationAlert("Close Application", "Do you want to close this application?")) {
                 Platform.exit();

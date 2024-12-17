@@ -88,30 +88,6 @@
                                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                     </VBox.margin>
                                 </Label>
-                                <Label text="ADDRESS">
-                                    <padding>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                    </padding>
-                                    <VBox.margin>
-                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Label text="MOBILE NO">
-                                    <padding>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                    </padding>
-                                    <VBox.margin>
-                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Label text="EMAIL ID">
-                                    <padding>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                    </padding>
-                                    <VBox.margin>
-                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                    </VBox.margin>
-                                </Label>
                                 <Label text="AMOUNT">
                                     <padding>
                                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -128,7 +104,31 @@
                                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                     </VBox.margin>
                                 </Label>
+                                <Label text="MOBILE NO">
+                                    <padding>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                    <VBox.margin>
+                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                    </VBox.margin>
+                                </Label>
                                 <Label layoutX="35.0" layoutY="161.0" prefHeight="19.0" prefWidth="101.0" text="AADHAR NO.">
+                                    <padding>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                    <VBox.margin>
+                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ADDRESS">
+                                    <padding>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                    <VBox.margin>
+                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="EMAIL ID">
                                     <padding>
                                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </padding>
@@ -187,30 +187,6 @@
                                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </padding>
                                 </TextField>
-                                <TextField fx:id="address" promptText="Address">
-                                    <VBox.margin>
-                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                    </VBox.margin>
-                                    <padding>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                    </padding>
-                                </TextField>
-                                <TextField fx:id="mobile_no" promptText="Mobile No">
-                                    <VBox.margin>
-                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                    </VBox.margin>
-                                    <padding>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                    </padding>
-                                </TextField>
-                                <TextField fx:id="email_id" promptText="Email Id">
-                                    <VBox.margin>
-                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                    </VBox.margin>
-                                    <padding>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                    </padding>
-                                </TextField>
                                 <TextField fx:id="amount" promptText="Amount">
                                     <VBox.margin>
                                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
@@ -234,7 +210,31 @@
                                         <Insets top="2.0" />
                                     </padding>
                                 </ChoiceBox>
+                                <TextField fx:id="mobile_no" promptText="Mobile No">
+                                    <VBox.margin>
+                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                    </VBox.margin>
+                                    <padding>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                </TextField>
                                 <TextField fx:id="aadhar_no" promptText="Aadhar No">
+                                    <VBox.margin>
+                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                    </VBox.margin>
+                                    <padding>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                </TextField>
+                                <TextField fx:id="address" promptText="Address">
+                                    <VBox.margin>
+                                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                    </VBox.margin>
+                                    <padding>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                </TextField>
+                                <TextField fx:id="email_id" promptText="Email Id">
                                     <VBox.margin>
                                         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                     </VBox.margin>

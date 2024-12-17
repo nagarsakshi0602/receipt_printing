@@ -10,26 +10,34 @@ public class PropertyFileLoader {
     private Properties properties;
     private static PropertyFileLoader instance;
 
-    public static PropertyFileLoader getInstance(){
-        if(instance == null){
-            try{
+    public static PropertyFileLoader getInstance() {
+        if (instance == null) {
+            try {
                 instance = new PropertyFileLoader();
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException("Failed to load property file", e);
             }
         }
         return instance;
     }
-    public void loadProperty(String fileName) throws IOException {
-        File directoryPath = new File(System.getProperty("user.dir"));
-        File propertyFile = new File(directoryPath, fileName+".properties");
 
-        if(!propertyFile.exists()){
+    public void loadProperty(String fileName) throws IOException {
+        File propertyFile;
+        properties = new Properties();
+        String propertyFileName = System.getProperty("configFile");
+
+        if (propertyFileName != null) {
+            propertyFile = new File(propertyFileName);
+            System.out.println("Into config from command line");
+        } else {
+            File directoryPath = new File(System.getProperty("user.dir"));
+             propertyFile = new File(directoryPath, fileName + ".properties");
+            System.out.println("Into default config");
+        }
+        if (!propertyFile.exists()) {
             throw new IOException("Configuration file not found: " + propertyFile.getAbsolutePath());
         }
-
-        properties = new Properties();
-        try{
+        try {
             FileInputStream fis = new FileInputStream(propertyFile);
             properties.load(fis);
         } catch (IOException e) {
@@ -37,7 +45,7 @@ public class PropertyFileLoader {
         }
     }
 
-    public String getProperty(String key){
+    public String getProperty(String key) {
         return properties.getProperty(key);
     }
 }
