@@ -10,16 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="abc071e7-c0ea-46fa-8c0f-03714e94a9f0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config2.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/donators_db.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/donators_db.mv.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/donators_db.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/donators_db.trace.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/ReceiptApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/ReceiptApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/FormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/FormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/JasperReportUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/JasperReportUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/PropertyFileLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/PropertyFileLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/receipt.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/receipt.jrxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
