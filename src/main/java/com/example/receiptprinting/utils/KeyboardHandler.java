@@ -1,9 +1,12 @@
 package com.example.receiptprinting.utils;
 
 import com.example.receiptprinting.controllers.FormController;
+import com.example.receiptprinting.models.ModeOfPayment;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.util.List;
 
@@ -104,5 +107,20 @@ public class KeyboardHandler {
                 }
             });
         }
+    }
+
+    public void selectOptionOnKeyPress(ChoiceBox choiceBox) {
+        // Adding a key press event handler to the choice box
+        choiceBox.addEventHandler(KeyEvent.KEY_PRESSED, event ->{
+            if (choiceBox.isFocused()) {
+                if (event.getCode() == KeyCode.C) {
+                    choiceBox.setValue(ModeOfPayment.CASH);
+                } else if (event.getCode() == KeyCode.Q) {
+                    choiceBox.setValue(ModeOfPayment.CHEQUE);
+                } else if (event.getCode() == KeyCode.O) {
+                    choiceBox.setValue(ModeOfPayment.ONLINE_TRANSFER);
+                }
+            }
+        });
     }
 }

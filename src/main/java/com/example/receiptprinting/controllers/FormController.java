@@ -1,7 +1,10 @@
 package com.example.receiptprinting.controllers;
 
 import com.example.receiptprinting.models.Donators;
+import com.example.receiptprinting.models.ModeOfPayment;
 import com.example.receiptprinting.utils.*;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -35,6 +38,8 @@ public class FormController {
         System.out.println("Into intialization phase");
         DatabaseUtil.initializeDatabase();
         save.setDisable(true);
+        Platform.runLater(() -> reset.requestFocus());
+        mode_of_payment.setItems(FXCollections.observableArrayList(ModeOfPayment.values()));
 
         try {
             propertyFileLoader.loadProperty("config");
@@ -64,7 +69,7 @@ public class FormController {
     @FXML
     public void saveDonator() {
         if (isAdvancedValidation.equalsIgnoreCase("false") || isAdvancedValidation.equalsIgnoreCase("no")) {
-            System.out.print("Into basic validation");
+            System.out.println("Into basic validation");
             if (isRequiredFieldPresent()) {
                 save();
 
@@ -212,8 +217,8 @@ public class FormController {
     private void initializeKeyboardHandlers() {
         KeyboardHandler keyboardHandler = new KeyboardHandler(this);
 
-        keyboardHandler.setEnterKeyNavigation(Arrays.asList(receipt_no, date, name, address, mobile_no, email_id, amount,
-                mode_of_payment, aadhar_no, remark, save));
+        keyboardHandler.setEnterKeyNavigation(Arrays.asList(receipt_no, date, name, amount,
+                mode_of_payment, mobile_no, aadhar_no, address, email_id, remark, save));
         keyboardHandler.setButtonNavigation(Arrays.asList(reset, save, update, receipt, find, delete));
         keyboardHandler.callNewOnEnter(reset);
         keyboardHandler.callSaveOnEnter(save);
@@ -221,6 +226,7 @@ public class FormController {
         keyboardHandler.callGenerateReceiptOnEnter(receipt);
         keyboardHandler.callFindOnEnter(find);
         keyboardHandler.callDeleteOnEnter(delete);
+        keyboardHandler.selectOptionOnKeyPress(mode_of_payment);
 
 
     }

@@ -198,9 +198,9 @@
                                 <ChoiceBox fx:id="mode_of_payment" prefWidth="150.0">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value="Cash" />
+                                            <!--<String fx:value="Cash" />
                                             <String fx:value="Cheque" />
-                                            <String fx:value="Online Transfer" />
+                                            <String fx:value="Online Transfer" />-->
                                         </FXCollections>
                                     </items>
                                     <VBox.margin>
