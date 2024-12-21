@@ -24,7 +24,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="150" splitType="Stretch">
+		<band height="114" splitType="Stretch">
 			<textField>
 				<reportElement x="30" y="20" width="500" height="30" forecolor="#B54504" uuid="cec91be8-caa9-4e5e-92d0-edcf19cd1170">
 					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$P{font_color}]]></propertyExpression>
@@ -71,7 +71,7 @@
 				<textFieldExpression><![CDATA[$P{email_id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="90" width="500" height="40" isPrintWhenDetailOverflows="true" forecolor="#B54504" uuid="002a09a2-c74d-4990-8fb1-250427ca1e4d">
+				<reportElement x="30" y="90" width="500" height="20" isPrintWhenDetailOverflows="true" forecolor="#B54504" uuid="002a09a2-c74d-4990-8fb1-250427ca1e4d">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.export.xls.wrap.text" value="true"/>
 					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$P{font_color}]]></propertyExpression>
@@ -84,7 +84,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="85" splitType="Stretch">
+		<band height="78" splitType="Stretch">
 			<staticText>
 				<reportElement x="10" y="50" width="90" height="25" forecolor="#B54504" uuid="c841f316-95b6-4291-a419-dcf574087cbe">
 					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$P{font_color}]]></propertyExpression>

@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,6 +65,7 @@ public class FormController {
         save.setDisable(false);
         receipt_no.setText(receiptNew);
         date.requestFocus();
+        date.setValue(LocalDate.now());
     }
 
     @FXML
