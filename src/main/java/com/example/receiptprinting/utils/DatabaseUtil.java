@@ -1,9 +1,14 @@
 package com.example.receiptprinting.utils;
 
 import com.example.receiptprinting.models.Donators;
+import com.example.receiptprinting.models.ReceiptSummary;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DatabaseUtil {
     private static final String DB_URL;
@@ -46,6 +51,21 @@ public class DatabaseUtil {
                     """;
             stmt.execute(createTableSQL);
             System.out.println("Intialization Done");
+
+            Statement statement = conn.createStatement();
+            // Check if the table is empty
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM donators_details");
+            resultSet.next();
+            int rowCount = resultSet.getInt("count");
+
+            if (rowCount == 0) {
+                // If the table is empty, set the auto-increment starting value to 201
+                statement.execute("ALTER TABLE donators_details ALTER COLUMN id RESTART WITH " + PropertyFileLoader.getInstance().getProperty("starting_id"));
+                System.out.println("Table is empty. Setting starting value to " + PropertyFileLoader.getInstance().getProperty("starting_id"));
+            } else {
+                System.out.println("Table is not empty. Auto-increment continues as usual.");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,10 +73,12 @@ public class DatabaseUtil {
 
     public static void insertDonators(Donators donators) throws SQLException {
 
+        Connection conn = DatabaseUtil.getConnection();
+
         String insertSQL = "INSERT INTO donators_details (name, address, email_id, mobile_no, amount, mode_of_payment, " +
                 "date, aadhar_no, remark) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        Connection conn = DatabaseUtil.getConnection();
+
         PreparedStatement stmt = conn.prepareStatement(insertSQL);
 
         stmt.setString(1, donators.getName());
@@ -110,28 +132,7 @@ public class DatabaseUtil {
         ps.executeUpdate();
 
     }
-
-   /* public static void select() {
-        System.out.println("Into get donators Details");
-        Connection conn = null;
-        try {
-            conn = getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            ResultSet resultSet = conn.createStatement().executeQuery("SELECT * FROM donators_details");
-            while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String phone = resultSet.getString("mobile_no");
-                System.out.println("Name: " + name + ", Phone: " + phone);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-    public static Donators getDonatorsDetail(int id) throws SQLException {
+    public static Donators getDonatorsReport(int id) throws SQLException {
         String getRecordQuery = "SELECT * FROM DONATORS_DETAILS WHERE ID = ?";
         ResultSet rs;
         Donators donators = null;
@@ -159,6 +160,46 @@ public class DatabaseUtil {
         ps.setInt(1, Integer.parseInt(id));
 
         ps.execute();
+    }
+
+    public static ResultSet getDonatorsReport(LocalDate fromDate, LocalDate toDate) throws SQLException {
+
+        String getRecordQuery = "SELECT * FROM DONATORS_DETAILS WHERE DATE BETWEEN ? AND ?";
+
+        PreparedStatement ps = getConnection().prepareStatement(getRecordQuery);
+
+        ps.setDate(1, Date.valueOf(fromDate));
+        ps.setDate(2, Date.valueOf(toDate));
+
+        ResultSet rs = ps.executeQuery();
+
+
+        return rs;
+    }
+
+    public static ObservableList<ReceiptSummary> getDonatorsSummary(LocalDate fromDate, LocalDate toDate) throws SQLException {
+        ObservableList<ReceiptSummary> summaries = FXCollections.observableArrayList();
+
+        String getRecordQuery = "SELECT DATE, MIN(ID) AS RECEIPT_FROM, MAX(ID) AS RECEIPT_TO, COUNT(ID) AS TOTAL_DONATIONS, SUM(AMOUNT) AS TOTAL_AMOUNT" +
+                " FROM DONATORS_DETAILS WHERE DATE BETWEEN ? AND ? GROUP BY DATE";
+
+        PreparedStatement ps = getConnection().prepareStatement(getRecordQuery);
+
+        ps.setDate(1, Date.valueOf(fromDate));
+        ps.setDate(2, Date.valueOf(toDate));
+
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            ReceiptSummary receiptSummary = new ReceiptSummary(rs.getDate("DATE").toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                    rs.getInt("RECEIPT_FROM"), rs.getInt("RECEIPT_TO"), rs.getInt("TOTAL_DONATIONS"),
+                    rs.getDouble("TOTAL_AMOUNT"));
+            receiptSummary.setDeleted_receipt((receiptSummary.getEnding_receipt_no() - receiptSummary.getStarting_receipt_no() + 1) - rs.getInt("TOTAL_DONATIONS"));
+            summaries.add(receiptSummary);
+
+        }
+
+        return summaries;
     }
 }
 

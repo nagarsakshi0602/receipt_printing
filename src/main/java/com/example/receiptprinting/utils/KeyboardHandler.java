@@ -1,6 +1,8 @@
 package com.example.receiptprinting.utils;
 
-import com.example.receiptprinting.controllers.FormController;
+import com.example.receiptprinting.controllers.EnterDetailsController;
+import com.example.receiptprinting.controllers.MainController;
+import com.example.receiptprinting.controllers.ReportController;
 import com.example.receiptprinting.models.ModeOfPayment;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -11,10 +13,18 @@ import javafx.scene.input.KeyEvent;
 import java.util.List;
 
 public class KeyboardHandler {
-    FormController formController;
+    EnterDetailsController enterDetailsController;
+    ReportController reportController;
+    MainController mainController;
 
-    public KeyboardHandler(FormController formController) {
-        this.formController = formController;
+    public KeyboardHandler(Object controller) {
+        if(controller instanceof MainController){
+            mainController = (MainController) controller;
+        } else if(controller instanceof EnterDetailsController){
+            enterDetailsController = (EnterDetailsController) controller;
+        } else if( controller instanceof ReportController){
+            reportController = (ReportController) controller;
+        }
     }
 
     public void setEnterKeyNavigation(List<Node> fields) {
@@ -38,7 +48,7 @@ public class KeyboardHandler {
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 // Call the method when Enter is pressed
-                formController.saveDonator();
+                enterDetailsController.saveDonator();
             }
         });
     }
@@ -48,7 +58,7 @@ public class KeyboardHandler {
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 // Call the method when Enter is pressed
-                formController.newDonator();
+                enterDetailsController.newDonator();
             }
         });
     }
@@ -58,7 +68,7 @@ public class KeyboardHandler {
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 // Call the method when Enter is pressed
-                formController.updateDonatorDetail();
+                enterDetailsController.updateDonatorDetail();
             }
         });
     }
@@ -68,7 +78,7 @@ public class KeyboardHandler {
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 // Call the method when Enter is pressed
-                formController.findDonatorDetail();
+                enterDetailsController.findDonatorDetail();
             }
         });
     }
@@ -78,7 +88,7 @@ public class KeyboardHandler {
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 // Call the method when Enter is pressed
-                formController.generateReceipt();
+                enterDetailsController.generateReceipt();
             }
         });
     }
@@ -88,7 +98,7 @@ public class KeyboardHandler {
         button.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 // Call the method when Enter is pressed
-                formController.deleteDonator();
+                enterDetailsController.deleteDonator();
             }
         });
     }

@@ -31,7 +31,7 @@ public class ReceiptApplication extends Application {
 
 
         //Loading FXML file to create the application window
-        FXMLLoader fxmlLoader = new FXMLLoader(ReceiptApplication.class.getResource("Form.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ReceiptApplication.class.getResource("Main.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         stage.setTitle(propertyFileLoader.getProperty("companyName"));
