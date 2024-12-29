@@ -45,6 +45,7 @@ public class JasperReportUtil {
             parameters.put("amount_in_words", CommonUtils.convertToWords(donator.getAmount()) + "only");
             parameters.put("font_color", propertyFileLoader.getProperty("font_color"));
             parameters.put("border_color", propertyFileLoader.getProperty("border_color"));
+            parameters.put("headerImage", propertyFileLoader.getProperty("header_image_path"));
 
 
             JasperPrint print = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());

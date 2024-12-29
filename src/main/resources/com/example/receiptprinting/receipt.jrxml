@@ -17,6 +17,7 @@
 	<parameter name="more_info" class="java.lang.String"/>
 	<parameter name="font_color" class="java.lang.String"/>
 	<parameter name="border_color" class="java.lang.String"/>
+	<parameter name="headerImage" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -24,7 +25,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="114" splitType="Stretch">
+		<band height="122" splitType="Stretch">
 			<textField>
 				<reportElement x="30" y="20" width="500" height="30" forecolor="#B54504" uuid="cec91be8-caa9-4e5e-92d0-edcf19cd1170">
 					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$P{font_color}]]></propertyExpression>
@@ -81,6 +82,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{more_info}]]></textFieldExpression>
 			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="10" y="0" width="535" height="122" uuid="c07a6320-9d2d-4de5-8ca7-ef14c49cd36d"/>
+				<imageExpression><![CDATA[$P{headerImage}]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>

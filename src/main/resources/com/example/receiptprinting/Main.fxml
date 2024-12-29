@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="566.0" prefWidth="638.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.receiptprinting.controllers.MainController">
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="356.0" prefWidth="599.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Pane prefHeight="101.0" prefWidth="640.0">
+                    <children>
+                        <Label fx:id="company_name" alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="14.0" prefHeight="43.0" prefWidth="592.0" text="COMPANY NAME" textAlignment="CENTER" textFill="#3f6a79">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <effect>
+                                <Glow />
+                            </effect>
+                        </Label>
+                  <Label fx:id="company_address" alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="49.0" prefHeight="17.0" prefWidth="592.0" text="Company address" textAlignment="CENTER" textFill="#3f6a79" />
+                  <Label fx:id="more_info" alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="66.0" prefHeight="23.0" prefWidth="592.0" textAlignment="CENTER" textFill="#3f6a79" />
+                    </children>
+                </Pane>
+            <TabPane layoutY="99.0">
+               <tabs>
+                  <Tab closable="false" text="Receipt">
+                     <content>
+                        <fx:include fx:id="enterDetailsTab" source="EnterDetails.fxml" />
+                     </content>
+                  </Tab>
+                  <Tab closable="false" text="Report">
+                     <content>
+                        <fx:include fx:id="resultsTab" source="Report.fxml" />
+                     </content>
+                  </Tab>
+                  <Tab closable="false" text="Summary">
+                     <content>
+                        <fx:include fx:id="summaryTab" source="Summary.fxml" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

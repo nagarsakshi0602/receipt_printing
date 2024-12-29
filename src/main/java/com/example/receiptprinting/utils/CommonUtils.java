@@ -1,9 +1,6 @@
 package com.example.receiptprinting.utils;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.util.StringConverter;
 
@@ -149,7 +146,7 @@ public class CommonUtils {
 
     }
 
-    public static void dateConverter(DatePicker datePicker) {
+    public static DateTimeFormatter dateConverter(DatePicker datePicker) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         // Set a custom StringConverter to display the date in the desired format
@@ -178,7 +175,14 @@ public class CommonUtils {
                 String formattedDate = selectedDate.format(dateFormatter);
             }
         });
-
+        return dateFormatter;
     }
 
+
+    public static <T> void resizeColumn(TableView<T> tableView) {
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        for (TableColumn<T, ?> column : tableView.getColumns()) {
+            column.setPrefWidth(1); // Reset to auto-resize
+        }
+    }
 }

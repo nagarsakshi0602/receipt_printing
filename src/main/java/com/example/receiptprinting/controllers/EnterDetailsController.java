@@ -8,14 +8,15 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FormController {
+public class EnterDetailsController{
+
     @FXML
     private TextField receipt_no, name, address, mobile_no, email_id, amount, aadhar_no, remark;
     @FXML
@@ -24,43 +25,38 @@ public class FormController {
     private DatePicker date;
     @FXML
     private Button save, reset, find, update, receipt, delete;
-
     @FXML
-    Label errorLabel, companyName, companyAddress, moreInfo;
+    Label errorLabel;
 
     public static Donators donators;
     public static String receiptNew;
     private final ValidationListeners validationListeners = new ValidationListeners();
-    private PropertyFileLoader propertyFileLoader = PropertyFileLoader.getInstance();
     String isAdvancedValidation;
+    private DateTimeFormatter dateFormatter;
+
 
     @FXML
     public void initialize() {
-        System.out.println("Into intialization phase");
-        DatabaseUtil.initializeDatabase();
         save.setDisable(true);
         Platform.runLater(() -> reset.requestFocus());
         mode_of_payment.setItems(FXCollections.observableArrayList(ModeOfPayment.values()));
+        dateFormatter = CommonUtils.dateConverter(date);
 
-        try {
-            propertyFileLoader.loadProperty("config");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        companyName.setText(propertyFileLoader.getProperty("company_name"));
-        companyAddress.setText(propertyFileLoader.getProperty("company_address"));
-        moreInfo.setText(propertyFileLoader.getProperty("form.more_info"));
-        isAdvancedValidation = propertyFileLoader.getProperty("advanced_validation");
-        System.out.println(isAdvancedValidation + " : isAdvancedValidation");
-
-        CommonUtils.dateConverter(date);
+        isAdvancedValidation = PropertyFileLoader.getInstance().getProperty("advanced_validation");
         initializeKeyboardHandlers();
         addValidationListeners();
     }
+
     @FXML
     public void newDonator() {
         clearFields();
-        receiptNew = String.valueOf(DatabaseUtil.getLastReceiptId() + 1);
+        if(DatabaseUtil.getLastReceiptId() == 0){
+            receiptNew = PropertyFileLoader.getInstance().getProperty("starting_id");
+        }
+        else{
+            receiptNew = String.valueOf( DatabaseUtil.getLastReceiptId() + 1);
+        }
+
         receipt_no.setDisable(true);
         save.setDisable(false);
         receipt_no.setText(receiptNew);
@@ -76,7 +72,7 @@ public class FormController {
                 save();
 
             } else {
-                CommonUtils.showError("Required : Name, Amount, Mode of Payment and Date" +
+                CommonUtils.showError("Required : Name, Amount, Mode of Payment and Date. " +
                         "Please enter everything before saving", errorLabel);
             }
         } else {
@@ -84,16 +80,14 @@ public class FormController {
                 System.out.println("Into Advanced Validation");
                 save();
             } else {
-                CommonUtils.showError("Required : Name, Amount, Mode of Payment, Date and Either Mobile or Aadhar details" +
+                CommonUtils.showError("Required : Name, Amount, Mode of Payment, Date and Either Mobile or Aadhar details. " +
                         "Please enter everything before saving", errorLabel);
             }
         }
-
     }
 
     @FXML
     public void updateDonatorDetail() {
-        // validationListeners.addNameValidation(name, errorLabel);
         if (!save.isDisabled()) {
             save.setDisable(true);
         }
@@ -102,14 +96,14 @@ public class FormController {
                 update();
 
             } else {
-                CommonUtils.showError("Required : Name, Amount, Mode of Payment and Date" +
+                CommonUtils.showError("Required : Name, Amount, Mode of Payment and Date. " +
                         "Please enter everything before saving", errorLabel);
             }
         } else {
             if (isRequiredFieldPresent() && isAdvancedValidationFieldsPresent()) {
                 update();
             } else {
-                CommonUtils.showError("Required : Name, Amount, Mode of Payment, Date and Either Mobile or Aadhar details" +
+                CommonUtils.showError("Required : Name, Amount, Mode of Payment, Date and Either Mobile or Aadhar details. " +
                         "Please enter everything before saving", errorLabel);
             }
         }
@@ -125,7 +119,7 @@ public class FormController {
 
         int id = Integer.parseInt(receipt_no.getText());
         try {
-            donators = DatabaseUtil.getDonatorsDetail(id);
+            donators = DatabaseUtil.getDonatorsReport(id);
             if (donators == null) {
                 CommonUtils.showAlert("Record Not Found", "Record with this receipt no. : " + id + " not found");
             } else {
@@ -149,7 +143,7 @@ public class FormController {
         int id = Integer.parseInt(receipt_no.getText());
         List donator_list = new ArrayList<>();
         try {
-            Donators donators = DatabaseUtil.getDonatorsDetail(id);
+            Donators donators = DatabaseUtil.getDonatorsReport(id);
             if (donators == null) {
                 CommonUtils.showAlert("Record Error", "Record with this id: " + id + " not found");
             } else {
@@ -235,11 +229,12 @@ public class FormController {
 
     private void addValidationListeners() {
         validationListeners.restrictToNumber(mobile_no);
-        validationListeners.restrictToNumber(amount);
+        validationListeners.restrictToDecimalNumber(amount);
         validationListeners.restrictToNumber(aadhar_no);
         validationListeners.restrictToMaxLength(aadhar_no, 12);
         validationListeners.restrictToMaxLength(mobile_no, 15);
         validationListeners.restrictToAlphabetsAndSpaces(name);
+        validationListeners.validateDate(date);
 
     }
 
@@ -259,8 +254,7 @@ public class FormController {
         donators = new Donators(name.getText(), address.getText(), email_id.getText(), mobile_no.getText(),
                 Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), date.getValue(),
                 aadhar_no.getText(), remark.getText());
-        boolean isValid = true;
-        //if (isFormValid()) {
+
         if (isFormValid()) return;
         try {
             DatabaseUtil.update(donators, Integer.parseInt(receipt_no.getText()));
@@ -279,9 +273,11 @@ public class FormController {
         donators = new Donators(name.getText(), address.getText(), email_id.getText(), mobile_no.getText(),
                 Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), date.getValue(),
                 aadhar_no.getText(), remark.getText());
-        boolean isValid = true;
-        //if (isFormValid()) {
-        if (isFormValid()) return;
+
+        if (isFormValid()) {
+            CommonUtils.showError("", errorLabel);
+            return;
+        }
         try {
             DatabaseUtil.insertDonators(donators);
             if (CommonUtils.confirmationAlert("Print Confirmation", "Do you want to print receipt?")) {
@@ -297,6 +293,5 @@ public class FormController {
             CommonUtils.showAlert("Database Error", "Could not save data.");
         }
     }
-
 
 }
