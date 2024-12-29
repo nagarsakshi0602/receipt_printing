@@ -36,7 +36,7 @@ public class DatabaseUtil {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             String createTableSQL = """
                         CREATE TABLE IF NOT EXISTS donators_details (
-                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            id INT PRIMARY KEY,
                             name VARCHAR(100),
                             address VARCHAR(100),
                             mobile_no VARCHAR(15),
@@ -52,15 +52,21 @@ public class DatabaseUtil {
             stmt.execute(createTableSQL);
             System.out.println("Intialization Done");
 
-            Statement statement = conn.createStatement();
+            //Create statement if it doesn't exist
+            String createSequenceSQL = "CREATE SEQUENCE IF NOT EXISTS public.receipt_no " +
+                    "START WITH " + PropertyFileLoader.getInstance().getProperty("starting_id")+ "INCREMENT BY 1";
+            stmt.execute(createSequenceSQL);
+
+
+
             // Check if the table is empty
-            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM donators_details");
+            ResultSet resultSet = stmt.executeQuery("SELECT COUNT(*) AS count FROM donators_details");
             resultSet.next();
             int rowCount = resultSet.getInt("count");
 
             if (rowCount == 0) {
-                // If the table is empty, set the auto-increment starting value to 201
-                statement.execute("ALTER TABLE donators_details ALTER COLUMN id RESTART WITH " + PropertyFileLoader.getInstance().getProperty("starting_id"));
+                // If the table is empty, set the auto-increment starting value to requested value
+                stmt.execute("ALTER SEQUENCE receipt_no RESTART WITH " + PropertyFileLoader.getInstance().getProperty("starting_id"));
                 System.out.println("Table is empty. Setting starting value to " + PropertyFileLoader.getInstance().getProperty("starting_id"));
             } else {
                 System.out.println("Table is not empty. Auto-increment continues as usual.");
@@ -75,8 +81,8 @@ public class DatabaseUtil {
 
         Connection conn = DatabaseUtil.getConnection();
 
-        String insertSQL = "INSERT INTO donators_details (name, address, email_id, mobile_no, amount, mode_of_payment, " +
-                "date, aadhar_no, remark) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO donators_details (id, name, address, email_id, mobile_no, amount, mode_of_payment, " +
+                "date, aadhar_no, remark) VALUES (NEXTVAL('public.receipt_no'), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         PreparedStatement stmt = conn.prepareStatement(insertSQL);
@@ -95,14 +101,17 @@ public class DatabaseUtil {
     }
 
     public static int getLastReceiptId() {
-        String getSqlQuery = "SELECT TOP 1 ID FROM donators_details ORDER BY ID DESC";
+        //String getSqlQuery = "SELECT TOP 1 ID FROM donators_details ORDER BY ID DESC";
+        //String getSqlQuery = "SELECT NEXTVAL('public.receipt_no') AS next_value";
+
+        String getSqlQuery = "SELECT BASE_VALUE FROM INFORMATION_SCHEMA.SEQUENCES WHERE SEQUENCE_NAME = 'RECEIPT_NO';";
 
         ResultSet resultSet;
         try {
             resultSet = getConnection().createStatement().executeQuery(getSqlQuery);
             while (resultSet.next()) {
-                System.out.println(resultSet.getInt("id"));
-                return resultSet.getInt("id");
+                System.out.println(resultSet.getInt("BASE_VALUE"));
+                return resultSet.getInt("BASE_VALUE");
             }
 
         } catch (SQLException e) {
@@ -172,7 +181,6 @@ public class DatabaseUtil {
         ps.setDate(2, Date.valueOf(toDate));
 
         ResultSet rs = ps.executeQuery();
-
 
         return rs;
     }

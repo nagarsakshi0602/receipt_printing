@@ -54,7 +54,7 @@ public class EnterDetailsController{
             receiptNew = PropertyFileLoader.getInstance().getProperty("starting_id");
         }
         else{
-            receiptNew = String.valueOf( DatabaseUtil.getLastReceiptId() + 1);
+            receiptNew = String.valueOf( DatabaseUtil.getLastReceiptId());
         }
 
         receipt_no.setDisable(true);
