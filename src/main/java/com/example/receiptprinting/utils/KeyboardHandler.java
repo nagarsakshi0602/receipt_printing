@@ -28,18 +28,22 @@ public class KeyboardHandler {
     }
 
     public void setEnterKeyNavigation(List<Node> fields) {
-        for (int i = 0; i < fields.size(); i++) {
-            Node currentField = fields.get(i);
-            Node nextField = (i + 1 < fields.size()) ? fields.get(i + 1) : null;
 
-            // Set Enter key action for current field
-            currentField.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.ENTER) {
-                    if (nextField != null) {
-                        nextField.requestFocus();  // Move focus to next field
-                    }
-                }
-            });
+        fields.forEach(field -> field.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                focusNextField(field, fields);
+            }
+        }));
+    }
+
+    private void focusNextField(Node currentField, List<Node> fields) {
+        int currentIndex = fields.indexOf(currentField);
+        for (int i = currentIndex + 1; i < fields.size(); i++) {
+            Node nextField = fields.get(i);
+            if (!nextField.isDisabled()) {
+                nextField.requestFocus();
+                return;
+            }
         }
     }
 

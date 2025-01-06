@@ -1,5 +1,7 @@
 package com.example.receiptprinting.utils;
 
+import com.example.receiptprinting.models.ModeOfPayment;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -182,5 +184,20 @@ public class ValidationListeners {
                 }
             }
         });
+    }
+
+    public void enablePaymentDetails(ChoiceBox choiceBox, TextField paymentDetails){
+        choiceBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if(newValue != null){
+                        // Enable the TextField only when "Enable Field" is selected
+                        if(newValue.equals(ModeOfPayment.CASH)){
+                            paymentDetails.setDisable(true);
+                        }
+                        else{
+                            paymentDetails.setDisable(false);
+                        }
+                    }
+                });
     }
 }

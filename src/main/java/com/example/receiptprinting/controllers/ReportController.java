@@ -2,15 +2,10 @@ package com.example.receiptprinting.controllers;
 
 import com.example.receiptprinting.models.Donators;
 import com.example.receiptprinting.models.ReceiptReport;
-import com.example.receiptprinting.utils.CommonUtils;
-import com.example.receiptprinting.utils.DatabaseUtil;
-import com.example.receiptprinting.utils.ExcelFileHandler;
-import com.example.receiptprinting.utils.ValidationListeners;
+import com.example.receiptprinting.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.print.PageLayout;
-import javafx.print.PrinterJob;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
@@ -20,7 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
+import static com.example.receiptprinting.utils.CommonUtils.formatDate;
 
 public class ReportController {
 
@@ -64,7 +60,7 @@ public class ReportController {
             ResultSet rs = DatabaseUtil.getDonatorsReport(from_date.getValue(), to_date.getValue());
             while(rs.next()){
                 receiptReport = new ReceiptReport(rs.getInt("id"), rs.getString("name"),
-                        rs.getDouble("amount"), rs.getDate("date").toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                        rs.getDouble("amount"), formatDate(rs.getDate("date").toLocalDate()),
                         rs.getString("mode_of_payment"), rs.getString("mobile_no"));
                 totalAmount += rs.getDouble("amount");
                 totalEnteries++;
@@ -140,49 +136,13 @@ public class ReportController {
 
     @FXML
     public void printReport() {
-        /*Printer printer = Printer.getDefaultPrinter();
-        if (printer == null) {
-            System.out.println("No printers found.");
-            return;
-        }*/
-
-        PrinterJob printerJob = PrinterJob.createPrinterJob();
-        if (printerJob != null && printerJob.showPrintDialog(reports_table.getScene().getWindow())) {
-            // Get the printable area
-            PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
-            double printableWidth = pageLayout.getPrintableWidth();
-            double printableHeight = pageLayout.getPrintableHeight();
-
-            // Scale the table to fit the printable area
-            double scaleX = printableWidth / reports_table.getBoundsInParent().getWidth();
-            double scaleY = printableHeight / reports_table.getBoundsInParent().getHeight();
-            double scale = Math.min(scaleX, scaleY); // Maintain aspect ratio
-
-            reports_table.setScaleX(scale);
-            reports_table.setScaleY(scale);
-
-            // Print the scaled table
-            boolean success = printerJob.printPage(reports_table);
-
-            // Reset scaling to avoid affecting the UI
-            reports_table.setScaleX(1.0);
-            reports_table.setScaleY(1.0);
-
-            if (success) {
-                printerJob.endJob();
-                System.out.println("Printing completed successfully.");
-            } else {
-                System.out.println("Printing failed.");
-            }
-        } else {
-            System.out.println("Printing canceled.");
-        }
+        JasperReportUtil.generateReport(reports_table, formatDate(from_date.getValue()), formatDate(to_date.getValue()));
     }
 
     @FXML
     public void exportReport() throws IOException {
 
         new ExcelFileHandler().openFileSelectionWindow(reports_table, "Register", "Receipt Register for the Period: " +
-                from_date.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " To: " + to_date.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                formatDate(from_date.getValue()) + " To: " + formatDate(to_date.getValue()));
     }
 }

@@ -43,6 +43,7 @@ public class DatabaseUtil {
                             email_id VARCHAR(100),
                             amount DOUBLE,
                             mode_of_payment VARCHAR(100),
+                            payment_details VARCHAR(50),
                             date DATE,
                             aadhar_no VARCHAR(100),
                             remark VARCHAR(100)
@@ -82,8 +83,9 @@ public class DatabaseUtil {
         Connection conn = DatabaseUtil.getConnection();
 
         String insertSQL = "INSERT INTO donators_details (id, name, address, email_id, mobile_no, amount, mode_of_payment, " +
-                "date, aadhar_no, remark) VALUES (NEXTVAL('public.receipt_no'), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "payment_details, date, aadhar_no, remark) VALUES (NEXTVAL('public.receipt_no'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        String remark = (donators.getRemark() == null || donators.getRemark().isEmpty()) ? "Voluntary Donation" : donators.getRemark();
 
         PreparedStatement stmt = conn.prepareStatement(insertSQL);
 
@@ -93,9 +95,10 @@ public class DatabaseUtil {
         stmt.setString(4, donators.getMobile_no());
         stmt.setDouble(5, donators.getAmount());
         stmt.setString(6, donators.getMode_of_payment());
-        stmt.setDate(7, Date.valueOf(donators.getDate()));
-        stmt.setString(8, donators.getAadhar_no());
-        stmt.setString(9, donators.getRemark());
+        stmt.setString(7, donators.getPayment_details());
+        stmt.setDate(8, Date.valueOf(donators.getDate()));
+        stmt.setString(9, donators.getAadhar_no());
+        stmt.setString(10, remark);
 
         stmt.executeUpdate();
     }
@@ -123,7 +126,7 @@ public class DatabaseUtil {
     public static void update(Donators donators, int id) throws SQLException {
 
         String updateQuery = "UPDATE DONATORS_DETAILS SET NAME = ?, ADDRESS = ?, EMAIL_ID = ?, MOBILE_NO = ?, AMOUNT = ?," +
-                "MODE_OF_PAYMENT = ?, DATE = ?, AADHAR_NO = ?, REMARK = ? WHERE ID = ?";
+                "MODE_OF_PAYMENT = ?, PAYMENT_DETAILS = ?, DATE = ?, AADHAR_NO = ?, REMARK = ? WHERE ID = ?";
 
         PreparedStatement ps = getConnection().prepareStatement(updateQuery);
 
@@ -133,10 +136,11 @@ public class DatabaseUtil {
         ps.setString(4, donators.getMobile_no());
         ps.setDouble(5, donators.getAmount());
         ps.setString(6, donators.getMode_of_payment());
-        ps.setDate(7, Date.valueOf(donators.getDate()));
-        ps.setString(8, donators.getAadhar_no());
-        ps.setString(9, donators.getRemark());
-        ps.setInt(10, id);
+        ps.setString(7, donators.getPayment_details());
+        ps.setDate(8, Date.valueOf(donators.getDate()));
+        ps.setString(9, donators.getAadhar_no());
+        ps.setString(10, donators.getRemark());
+        ps.setInt(11, id);
 
         ps.executeUpdate();
 
@@ -154,7 +158,7 @@ public class DatabaseUtil {
         while (rs.next()) {
             donators = new Donators(rs.getString("name"), rs.getString("address"),
                     rs.getString("email_id"), rs.getString("mobile_no"), rs.getDouble("amount"),
-                    rs.getString("mode_of_payment"), rs.getDate("date").toLocalDate(),
+                    rs.getString("mode_of_payment"), rs.getString("payment_details"), rs.getDate("date").toLocalDate(),
                     rs.getString("aadhar_no"), rs.getString("remark"));
             donators.setReceipt_no(id);
         }

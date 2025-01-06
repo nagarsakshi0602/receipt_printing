@@ -1,10 +1,7 @@
 package com.example.receiptprinting.controllers;
 
 import com.example.receiptprinting.models.ReceiptSummary;
-import com.example.receiptprinting.utils.CommonUtils;
-import com.example.receiptprinting.utils.DatabaseUtil;
-import com.example.receiptprinting.utils.ExcelFileHandler;
-import com.example.receiptprinting.utils.ValidationListeners;
+import com.example.receiptprinting.utils.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -17,7 +14,8 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
+import static com.example.receiptprinting.utils.CommonUtils.formatDate;
 
 public class SummaryController {
 
@@ -96,11 +94,12 @@ public class SummaryController {
 
     @FXML
     public void printSummary() {
+        JasperReportUtil.generateSummary(summary_table, formatDate(from_date.getValue()), formatDate(to_date.getValue()));
     }
 
     @FXML
     public void exportSummary() throws IOException {
         new ExcelFileHandler().openFileSelectionWindow(summary_table, "Summary", "Receipt Summary for the Period: " +
-                from_date.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " To: " + to_date.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                formatDate(from_date.getValue()) + " To: " + formatDate(to_date.getValue()));
     }
 }
