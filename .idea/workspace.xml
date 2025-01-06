@@ -11,19 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="abc071e7-c0ea-46fa-8c0f-03714e94a9f0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/donators_db.mv.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/donators_db.trace.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/ReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/ReportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/SummaryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/SummaryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/models/Donators.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/models/Donators.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/CommonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/DatabaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/DatabaseUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/JasperReportUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/JasperReportUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/KeyboardHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/KeyboardHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/ValidationListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/ValidationListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/EnterDetails.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/EnterDetails.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/receipt.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/receipt.jrxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
