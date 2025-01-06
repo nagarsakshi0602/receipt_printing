@@ -238,7 +238,7 @@ public class EnterDetailsController{
     private void addValidationListeners() {
         validationListeners.restrictToNumber(mobile_no);
         validationListeners.restrictToDecimalNumber(amount);
-        validationListeners.restrictToNumber(aadhar_no);
+        //validationListeners.restrictToNumber(aadhar_no);
         //validationListeners.restrictToMaxLength(aadhar_no, 12);
         validationListeners.restrictToMaxLength(mobile_no, 15);
         validationListeners.restrictToAlphabetsAndSpaces(name);
