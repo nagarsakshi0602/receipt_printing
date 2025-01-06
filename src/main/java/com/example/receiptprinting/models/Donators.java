@@ -11,13 +11,14 @@ public class Donators {
     private String mobile_no;
     private Double amount;
     private String mode_of_payment;
+    private String payment_details;
     private LocalDate date;
     private String aadhar_no;
 
     private String remark;
 
     public Donators(String name, String address, String email_id, String mobile_no, Double amount,
-                    String mode_of_payment, LocalDate date, String aadhar_no, String remark) {
+                    String mode_of_payment, String payment_details, LocalDate date, String aadhar_no, String remark) {
 
         this.name = name;
         this.address = address;
@@ -25,6 +26,7 @@ public class Donators {
         this.mobile_no = mobile_no;
         this.amount = amount;
         this.mode_of_payment = mode_of_payment;
+        this.payment_details = payment_details;
         this.date = date;
         this.aadhar_no = aadhar_no;
         this.remark = remark;
@@ -108,6 +110,14 @@ public class Donators {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getPayment_details() {
+        return payment_details;
+    }
+
+    public void setPayment_details(String payment_details) {
+        this.payment_details = payment_details;
     }
 
 }

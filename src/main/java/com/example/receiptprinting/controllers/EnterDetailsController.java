@@ -18,7 +18,7 @@ import java.util.List;
 public class EnterDetailsController{
 
     @FXML
-    private TextField receipt_no, name, address, mobile_no, email_id, amount, aadhar_no, remark;
+    private TextField receipt_no, name, address, mobile_no, email_id, amount, aadhar_no, remark, payment_details;
     @FXML
     private ChoiceBox mode_of_payment;
     @FXML
@@ -128,7 +128,8 @@ public class EnterDetailsController{
                 mobile_no.setText(donators.getMobile_no());
                 email_id.setText(donators.getEmail_id());
                 mode_of_payment.setValue(donators.getMode_of_payment());
-                amount.setText(donators.getAmount().toString());
+                amount.setText(String.format("%.2f", donators.getAmount()));
+                payment_details.setText(donators.getPayment_details());
                 date.setValue(donators.getDate());
                 aadhar_no.setText(donators.getAadhar_no());
                 remark.setText(donators.getRemark());
@@ -148,7 +149,7 @@ public class EnterDetailsController{
                 CommonUtils.showAlert("Record Error", "Record with this id: " + id + " not found");
             } else {
                 donator_list.add(donators);
-                JasperReportUtil.generateReport(donator_list);
+                JasperReportUtil.generateReceipt(donator_list);
             }
         } catch (SQLException e) {
             CommonUtils.showAlert("Database Error", "Unable to connect to database");
@@ -182,6 +183,13 @@ public class EnterDetailsController{
 
     private boolean isFormValid() {
         boolean isValid;
+       /* if(Double.parseDouble(amount.getText()) > 2000.00){
+            isValid = aadhar_no.getText().isEmpty();
+            if(isValid){
+                CommonUtils.showError("Aadhar/PAN Required for Amount greater than 2000", errorLabel);
+                return false;
+            }
+        }*/
         if (!email_id.getText().isEmpty()) {
             isValid = validationListeners.isEmailValid(email_id);
             if (!isValid) {
@@ -196,13 +204,13 @@ public class EnterDetailsController{
                 return true;
             }
         }
-        if (!aadhar_no.getText().isEmpty()) {
+        /*if (!aadhar_no.getText().isEmpty()) {
             isValid = validationListeners.isAadharValid(aadhar_no);
             if (!isValid) {
                 CommonUtils.showError("Invalid Aadhar. Aadhar digits cannot be less than 12", errorLabel);
                 return true;
             }
-        }
+        }*/
         return false;
     }
 
@@ -214,7 +222,7 @@ public class EnterDetailsController{
         KeyboardHandler keyboardHandler = new KeyboardHandler(this);
 
         keyboardHandler.setEnterKeyNavigation(Arrays.asList(receipt_no, date, name, amount,
-                mode_of_payment, mobile_no, aadhar_no, address, email_id, remark, save));
+                mode_of_payment, payment_details, mobile_no, aadhar_no, address, email_id, remark, save));
         keyboardHandler.setButtonNavigation(Arrays.asList(reset, save, update, receipt, find, delete));
         keyboardHandler.callNewOnEnter(reset);
         keyboardHandler.callSaveOnEnter(save);
@@ -231,10 +239,11 @@ public class EnterDetailsController{
         validationListeners.restrictToNumber(mobile_no);
         validationListeners.restrictToDecimalNumber(amount);
         validationListeners.restrictToNumber(aadhar_no);
-        validationListeners.restrictToMaxLength(aadhar_no, 12);
+        //validationListeners.restrictToMaxLength(aadhar_no, 12);
         validationListeners.restrictToMaxLength(mobile_no, 15);
         validationListeners.restrictToAlphabetsAndSpaces(name);
         validationListeners.validateDate(date);
+        validationListeners.enablePaymentDetails(mode_of_payment, payment_details);
 
     }
 
@@ -248,12 +257,13 @@ public class EnterDetailsController{
         remark.clear();
         date.setValue(null);
         mode_of_payment.setValue(null);
+        payment_details.clear();
     }
 
     private void update() {
         donators = new Donators(name.getText(), address.getText(), email_id.getText(), mobile_no.getText(),
-                Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), date.getValue(),
-                aadhar_no.getText(), remark.getText());
+                Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), payment_details.getText(),
+                date.getValue(), aadhar_no.getText(), remark.getText());
 
         if (isFormValid()) return;
         try {
@@ -271,8 +281,8 @@ public class EnterDetailsController{
 
     private void save() {
         donators = new Donators(name.getText(), address.getText(), email_id.getText(), mobile_no.getText(),
-                Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), date.getValue(),
-                aadhar_no.getText(), remark.getText());
+                Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), payment_details.getText(),
+                date.getValue(), aadhar_no.getText(), remark.getText());
 
         if (isFormValid()) {
             CommonUtils.showError("", errorLabel);
