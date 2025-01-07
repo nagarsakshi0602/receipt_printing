@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
@@ -12,13 +13,13 @@
 <AnchorPane fx:id="results" minHeight="0.0" minWidth="0.0" prefHeight="478.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.receiptprinting.controllers.ReportController">
    <children>
       <Pagination fx:id="pages" disable="true" layoutY="91.0" maxPageIndicatorCount="0" prefHeight="285.0" prefWidth="640.0" visible="false" />
-      <TableView fx:id="reports_table" layoutX="17.0" layoutY="70.0" prefHeight="285.0" prefWidth="605.0" />
+      <TableView fx:id="reports_table" layoutX="17.0" layoutY="92.0" prefHeight="263.0" prefWidth="605.0" />
       <Label contentDisplay="CENTER" layoutX="17.0" layoutY="25.0" prefHeight="21.0" prefWidth="40.0" text="From">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <DatePicker fx:id="from_date" layoutX="66.0" layoutY="21.0" prefHeight="25.0" prefWidth="133.0" promptText="dd-mm-yyyy">
+      <DatePicker fx:id="from_date" layoutX="57.0" layoutY="21.0" prefHeight="25.0" prefWidth="133.0" promptText="dd-mm-yyyy">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -60,5 +61,11 @@
       </TextField>
       <Button fx:id="print_report" layoutX="518.0" layoutY="421.0" mnemonicParsing="false" onAction="#printReport" prefHeight="25.0" prefWidth="104.0" text="Print" />
       <Button fx:id="export_report" layoutX="394.0" layoutY="421.0" mnemonicParsing="false" onAction="#exportReport" prefHeight="25.0" prefWidth="104.0" text="Export to Excel" />
+      <ComboBox fx:id="mode_of_payment_filter" layoutX="154.0" layoutY="60.0" prefHeight="25.0" prefWidth="191.0" visible="false" />
+      <Label fx:id="mode_of_payment" layoutX="17.0" layoutY="62.0" prefHeight="21.0" prefWidth="110.0" text="Mode of Payment" visible="false">
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+      </Label>
    </children>
 </AnchorPane>

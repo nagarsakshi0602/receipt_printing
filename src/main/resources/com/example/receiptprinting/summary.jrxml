@@ -40,6 +40,7 @@
         <field name="date" class="java.lang.String"/>
         <field name="total_donations" class="java.lang.Integer"/>
         <field name="deleted_receipt" class="java.lang.Integer"/>
+        <field name="mode_of_payment" class="java.lang.String"/>
     </subDataset>
     <parameter name="company_name" class="java.lang.String"/>
     <parameter name="header" class="java.lang.String"/>
@@ -87,11 +88,11 @@
                     <datasetRun subDataset="summaryDataset" uuid="5b7b4399-ee6b-4cf4-a9aa-154a1ed708f7">
                         <dataSourceExpression><![CDATA[$P{summaryDataset}]]></dataSourceExpression>
                     </datasetRun>
-                    <jr:column width="86" uuid="a1b87679-6774-4f7b-a548-dd704c07dca0">
+                    <jr:column width="70" uuid="a1b87679-6774-4f7b-a548-dd704c07dca0">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="86" height="30" uuid="3aca999a-b274-4bbf-8808-6953b67affcf"/>
+                                <reportElement x="0" y="0" width="70" height="30" uuid="3aca999a-b274-4bbf-8808-6953b67affcf"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="10"/>
                                 </textElement>
@@ -100,18 +101,18 @@
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="20">
                             <textField textAdjust="StretchHeight">
-                                <reportElement x="0" y="0" width="86" height="20" uuid="975e49be-faa9-42d6-a623-1df6dd217033"/>
+                                <reportElement x="0" y="0" width="70" height="20" uuid="975e49be-faa9-42d6-a623-1df6dd217033"/>
                                 <box padding="1" topPadding="0" bottomPadding="0" rightPadding="0"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="94" uuid="d891717e-9533-497c-b399-ea18f97abba8">
+                    <jr:column width="92" uuid="d891717e-9533-497c-b399-ea18f97abba8">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="94" height="30" uuid="59413c91-7b08-4850-b9c4-cebb5848cf41"/>
+                                <reportElement x="0" y="0" width="92" height="30" uuid="59413c91-7b08-4850-b9c4-cebb5848cf41"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="10"/>
                                 </textElement>
@@ -120,18 +121,18 @@
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="20">
                             <textField textAdjust="StretchHeight">
-                                <reportElement x="0" y="0" width="94" height="20" uuid="1a24a0cf-066b-4fb9-a509-da19ce62a40e"/>
+                                <reportElement x="0" y="0" width="92" height="20" uuid="1a24a0cf-066b-4fb9-a509-da19ce62a40e"/>
                                 <box padding="1"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression><![CDATA[$F{starting_receipt_no}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="88" uuid="f7808340-76a8-4eaf-88d5-702d6a84cf37">
+                    <jr:column width="80" uuid="f7808340-76a8-4eaf-88d5-702d6a84cf37">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="88" height="30" uuid="3abb6a3d-3ff1-4918-9f59-38610b388c0b"/>
+                                <reportElement x="0" y="0" width="80" height="30" uuid="3abb6a3d-3ff1-4918-9f59-38610b388c0b"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="10"/>
                                 </textElement>
@@ -140,18 +141,18 @@
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="20">
                             <textField textAdjust="StretchHeight">
-                                <reportElement x="0" y="0" width="88" height="20" uuid="cdef35c9-4d96-4cf3-8811-16e08a8e1551"/>
+                                <reportElement x="0" y="0" width="80" height="20" uuid="cdef35c9-4d96-4cf3-8811-16e08a8e1551"/>
                                 <box padding="1"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression><![CDATA[$F{ending_receipt_no}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="84" uuid="66ebeb9e-32e7-4cc4-9a42-5af38ac9bb18">
+                    <jr:column width="77" uuid="66ebeb9e-32e7-4cc4-9a42-5af38ac9bb18">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="84" height="30" uuid="74d92e7f-c72e-450a-86cb-f5c731436729"/>
+                                <reportElement x="0" y="0" width="77" height="30" uuid="74d92e7f-c72e-450a-86cb-f5c731436729"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="10"/>
                                 </textElement>
@@ -160,18 +161,18 @@
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="20">
                             <textField textAdjust="StretchHeight">
-                                <reportElement x="0" y="0" width="84" height="20" uuid="e2c48902-ec7a-4af3-8211-b99bd2ffd779"/>
+                                <reportElement x="0" y="0" width="77" height="20" uuid="e2c48902-ec7a-4af3-8211-b99bd2ffd779"/>
                                 <box padding="1"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression><![CDATA[$F{total_donations}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="108" uuid="03dbc0e2-74f5-4438-b197-08741190bcf9">
+                    <jr:column width="79" uuid="03dbc0e2-74f5-4438-b197-08741190bcf9">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="108" height="30" uuid="77705e7a-9a1f-4a52-881c-c030414739b9"/>
+                                <reportElement x="0" y="0" width="79" height="30" uuid="77705e7a-9a1f-4a52-881c-c030414739b9"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="10"/>
                                 </textElement>
@@ -180,18 +181,18 @@
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="20">
                             <textField textAdjust="StretchHeight">
-                                <reportElement x="0" y="0" width="108" height="20" uuid="895cebfc-4081-413b-83b3-60492e8d7d0a"/>
+                                <reportElement x="0" y="0" width="79" height="20" uuid="895cebfc-4081-413b-83b3-60492e8d7d0a"/>
                                 <box padding="1"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression><![CDATA[$F{deleted_receipt}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="90" uuid="e9b0674c-dae5-4ff0-80d7-228698c50328">
+                    <jr:column width="87" uuid="e9b0674c-dae5-4ff0-80d7-228698c50328">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="90" height="30" uuid="33aa92f2-e39e-43b4-8a7d-dbb2d0743e56"/>
+                                <reportElement x="0" y="0" width="87" height="30" uuid="33aa92f2-e39e-43b4-8a7d-dbb2d0743e56"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font size="10"/>
                                 </textElement>
@@ -200,10 +201,27 @@
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="20">
                             <textField textAdjust="StretchHeight" pattern="#.00#;(#.00#)">
-                                <reportElement x="0" y="0" width="90" height="20" uuid="8ce51912-4d82-497e-a109-0829f669089e"/>
+                                <reportElement x="0" y="0" width="87" height="20" uuid="8ce51912-4d82-497e-a109-0829f669089e"/>
                                 <box padding="1"/>
                                 <textElement textAlignment="Right" verticalAlignment="Middle"/>
                                 <textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="65" uuid="2772d1c6-8093-4eab-820f-b737e97cf36d">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+                        <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+                            <staticText>
+                                <reportElement x="0" y="0" width="65" height="30" uuid="29ba4a8b-48dd-4c7a-9f23-75240a9d7370"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <text><![CDATA[Mode of Payment]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell style="Table_TD" height="20">
+                            <textField>
+                                <reportElement x="0" y="0" width="65" height="20" uuid="eae9a85d-c0aa-445a-b533-b3cf9a1fc190"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <textFieldExpression><![CDATA[$F{mode_of_payment}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>

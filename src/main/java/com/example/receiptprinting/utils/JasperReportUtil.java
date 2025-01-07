@@ -17,15 +17,7 @@ public class JasperReportUtil {
     public static void generateReceipt(List<Donators> donators) {
         try {
 
-            // Load the .jrxml file as a resource inside the JAR
-            InputStream jrxmlInputStream = JasperReportUtil.class.getResourceAsStream("/com/example/receiptprinting/receipt.jrxml");
-
-            if (jrxmlInputStream == null) {
-                System.out.println("Jasper report template not found in JAR!");
-                return;
-            }
-
-            JasperReport report = JasperCompileManager.compileReport(jrxmlInputStream);
+            JasperReport report = loadJrxmlFile("receipt");
 
             PropertyFileLoader propertyFileLoader = PropertyFileLoader.getInstance();
             propertyFileLoader.loadProperty("config");
@@ -42,13 +34,19 @@ public class JasperReportUtil {
             parameters.put("receipt_no", donator.getReceipt_no());
             parameters.put("mobile_no", donator.getMobile_no());
             parameters.put("aadhar_no", donator.getAadhar_no());
+
+            //Check if get address not present
             String name = (donator.getAddress() == null || donator.getAddress().isEmpty())? "": ", "+ donator.getAddress();
             parameters.put("name", CommonUtils.toProperCase(donator.getName()) + CommonUtils.toProperCase(name));
             parameters.put("amount", donator.getAmount());
+
+            //Check if Payment details not present
             String paymentDetails = (donator.getPayment_details() == null || donator.getPayment_details().isEmpty()) ? "" : " - " + donator.getPayment_details();
             parameters.put("mode_of_payment", donator.getMode_of_payment() + paymentDetails );
             parameters.put("date", donator.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             parameters.put("remark", CommonUtils.toProperCase(donator.getRemark()));
+
+            //Checking for amount in words overflow
             String s = CommonUtils.convertToWords(donator.getAmount());
             String amount_first = null, amount_second = null;
             if( s.length() > 55){
@@ -98,7 +96,7 @@ public class JasperReportUtil {
         }
     }
 
-    public static <T> void generateReport(TableView<T> tableView, String fromDate, String toDate){
+    public static <T> void generateReport(TableView<T> tableView, String fromDate, String toDate, Double total_amount, Integer total_donations){
         try{
             JasperReport report = loadJrxmlFile("report");
             //Assign table data to JRBean
@@ -111,6 +109,8 @@ public class JasperReportUtil {
             parameters.put("company_name", propertyFileLoader.getProperty("company_name"));
             parameters.put("header", "Receipt Register for the Period: " + fromDate+" To: " + toDate);
             parameters.put("reportDataset", dataSource);
+            parameters.put("total_amount_collected", total_amount);
+            parameters.put("no_of_donations", total_donations);
 
             //Filling data into the report
             JasperPrint print = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());

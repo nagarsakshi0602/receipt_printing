@@ -8,15 +8,27 @@ public class ReceiptSummary {
     private String date;
     private Integer total_donations;
 
+    public String getMode_of_payment() {
+        return mode_of_payment;
+    }
+
+    public void setMode_of_payment(String mode_of_payment) {
+        this.mode_of_payment = mode_of_payment;
+    }
+
+    private String mode_of_payment;
+
 
     private Integer deleted_receipt;
 
-    public ReceiptSummary(String date, Integer starting_receipt_no, Integer ending_receipt_no, Integer total_donations, Double total_amount) {
+    public ReceiptSummary(String date, Integer starting_receipt_no, Integer ending_receipt_no, Integer total_donations,
+                          Double total_amount, String mode_of_payment) {
         this.starting_receipt_no = starting_receipt_no;
         this.ending_receipt_no = ending_receipt_no;
         this.total_amount = total_amount;
         this.date = date;
         this.total_donations = total_donations;
+        this.mode_of_payment =mode_of_payment;
     }
 
     public Integer getStarting_receipt_no() {

@@ -182,14 +182,16 @@ public class EnterDetailsController{
 
 
     private boolean isFormValid() {
+        errorLabel.setText("");
+        errorLabel.setVisible(false);
         boolean isValid;
-       /* if(Double.parseDouble(amount.getText()) > 2000.00){
-            isValid = aadhar_no.getText().isEmpty();
-            if(isValid){
+        if(Double.parseDouble(amount.getText()) > 2000.00){
+            isValid = validationListeners.isNotEmpty(aadhar_no.getText());
+            if(!isValid){
                 CommonUtils.showError("Aadhar/PAN Required for Amount greater than 2000", errorLabel);
-                return false;
+                return true;
             }
-        }*/
+        }
         if (!email_id.getText().isEmpty()) {
             isValid = validationListeners.isEmailValid(email_id);
             if (!isValid) {
@@ -211,6 +213,8 @@ public class EnterDetailsController{
                 return true;
             }
         }*/
+        errorLabel.setText("");
+        errorLabel.setVisible(false);
         return false;
     }
 
@@ -285,9 +289,9 @@ public class EnterDetailsController{
                 date.getValue(), aadhar_no.getText(), remark.getText());
 
         if (isFormValid()) {
-            CommonUtils.showError("", errorLabel);
             return;
         }
+
         try {
             DatabaseUtil.insertDonators(donators);
             if (CommonUtils.confirmationAlert("Print Confirmation", "Do you want to print receipt?")) {

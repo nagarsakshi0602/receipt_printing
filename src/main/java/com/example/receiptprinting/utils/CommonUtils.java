@@ -233,8 +233,11 @@ public class CommonUtils {
     }
 
     public static void showError(String message, Label errorLabel) {
-        errorLabel.setText(message);
-        errorLabel.setStyle("-fx-text-fill: red;");
+        if (errorLabel != null) {
+            errorLabel.setVisible(true);
+            errorLabel.setText(message);
+            errorLabel.setStyle("-fx-text-fill: red;");
+        }
     }
 
     public static void appendError(String message, Label errorLabel) {

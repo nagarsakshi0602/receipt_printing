@@ -189,7 +189,7 @@ public class DatabaseUtil {
         return rs;
     }
 
-    public static ObservableList<ReceiptSummary> getDonatorsSummary(LocalDate fromDate, LocalDate toDate) throws SQLException {
+    public static ObservableList<ReceiptSummary> getAllDonatorsSummary(LocalDate fromDate, LocalDate toDate) throws SQLException {
         ObservableList<ReceiptSummary> summaries = FXCollections.observableArrayList();
 
         String getRecordQuery = "SELECT DATE, MIN(ID) AS RECEIPT_FROM, MAX(ID) AS RECEIPT_TO, COUNT(ID) AS TOTAL_DONATIONS, SUM(AMOUNT) AS TOTAL_AMOUNT" +
@@ -205,7 +205,33 @@ public class DatabaseUtil {
         while(rs.next()){
             ReceiptSummary receiptSummary = new ReceiptSummary(rs.getDate("DATE").toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                     rs.getInt("RECEIPT_FROM"), rs.getInt("RECEIPT_TO"), rs.getInt("TOTAL_DONATIONS"),
-                    rs.getDouble("TOTAL_AMOUNT"));
+                    rs.getDouble("TOTAL_AMOUNT"), "ALL");
+            receiptSummary.setDeleted_receipt((receiptSummary.getEnding_receipt_no() - receiptSummary.getStarting_receipt_no() + 1) - rs.getInt("TOTAL_DONATIONS"));
+            summaries.add(receiptSummary);
+
+        }
+
+        return summaries;
+    }
+
+    public static ObservableList<ReceiptSummary> getDonatorsSummaryByMode(LocalDate fromDate, LocalDate toDate, String modeOfPayment) throws SQLException {
+        ObservableList<ReceiptSummary> summaries = FXCollections.observableArrayList();
+
+        String getRecordQuery = "SELECT DATE, MIN(ID) AS RECEIPT_FROM, MAX(ID) AS RECEIPT_TO, COUNT(ID) AS TOTAL_DONATIONS, SUM(AMOUNT) AS TOTAL_AMOUNT, MODE_OF_PAYMENT" +
+                " FROM DONATORS_DETAILS WHERE DATE BETWEEN ? AND ? AND MODE_OF_PAYMENT = ? GROUP BY DATE";
+
+        PreparedStatement ps = getConnection().prepareStatement(getRecordQuery);
+
+        ps.setDate(1, Date.valueOf(fromDate));
+        ps.setDate(2, Date.valueOf(toDate));
+        ps.setString(3,modeOfPayment.toUpperCase());
+
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            ReceiptSummary receiptSummary = new ReceiptSummary(rs.getDate("DATE").toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                    rs.getInt("RECEIPT_FROM"), rs.getInt("RECEIPT_TO"), rs.getInt("TOTAL_DONATIONS"),
+                    rs.getDouble("TOTAL_AMOUNT"), modeOfPayment);
             receiptSummary.setDeleted_receipt((receiptSummary.getEnding_receipt_no() - receiptSummary.getStarting_receipt_no() + 1) - rs.getInt("TOTAL_DONATIONS"));
             summaries.add(receiptSummary);
 

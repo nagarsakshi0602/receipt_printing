@@ -44,6 +44,8 @@
 	<parameter name="company_name" class="java.lang.String"/>
 	<parameter name="header" class="java.lang.String"/>
 	<parameter name="reportDataset" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="no_of_donations" class="java.lang.Integer"/>
+	<parameter name="total_amount_collected" class="java.lang.Double"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -218,6 +220,41 @@
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="130" height="30" uuid="aa454757-2b26-440f-a9cf-7e1f1d31f9cb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Total Amount Collected]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="11" width="130" height="30" uuid="34265f83-0464-472a-b754-a6486240bee5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Total Number of Donations]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" pattern="#.00#;(#.00#)">
+				<reportElement x="130" y="10" width="110" height="30" uuid="66872549-ed13-41d8-a2d3-97fb54103dc5"/>
+				<box padding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_amount_collected}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="10" width="82" height="30" uuid="0d19445b-32ec-4534-b5a6-3a11b4acb8f8"/>
+				<box padding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{no_of_donations}]]></textFieldExpression>
+			</textField>
+		</band>
 	</summary>
 </jasperReport>

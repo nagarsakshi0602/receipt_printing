@@ -1,13 +1,12 @@
 package com.example.receiptprinting.controllers;
 
+import com.example.receiptprinting.models.ModeOfPayment;
 import com.example.receiptprinting.models.ReceiptSummary;
 import com.example.receiptprinting.utils.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
@@ -26,9 +25,15 @@ public class SummaryController {
     TableView<ReceiptSummary> summary_table;
 
     @FXML
+    ComboBox mode_of_payment;
+
+    @FXML
     public void initialize() {
         from_date.requestFocus();
         initializeTableColumns();
+        mode_of_payment.setItems(FXCollections.observableArrayList(ModeOfPayment.values()));
+        mode_of_payment.getItems().add("ALL");
+        mode_of_payment.setValue("ALL"); // Default value
         ValidationListeners validationListeners = new ValidationListeners();
         validationListeners.validateDate(from_date);
         validationListeners.validateDate(to_date);
@@ -43,11 +48,17 @@ public class SummaryController {
     @FXML
     public void getSummary() throws SQLException {
 
-        try{
-            ObservableList<ReceiptSummary> donatorsSummary = DatabaseUtil.getDonatorsSummary(from_date.getValue(), to_date.getValue());
-            summary_table.setItems(donatorsSummary);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if(mode_of_payment.getValue() == null || mode_of_payment.getValue().toString().equalsIgnoreCase("All")) {
+            try {
+                ObservableList<ReceiptSummary> donatorsSummary = DatabaseUtil.getAllDonatorsSummary(from_date.getValue(), to_date.getValue());
+                summary_table.setItems(donatorsSummary);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            ObservableList<ReceiptSummary> donatorsSummaryByMode = DatabaseUtil.getDonatorsSummaryByMode(from_date.getValue(),
+                    to_date.getValue(), mode_of_payment.getValue().toString());
+            summary_table.setItems(donatorsSummaryByMode);
         }
 
     }
@@ -61,6 +72,9 @@ public class SummaryController {
 
         TableColumn<ReceiptSummary, Integer> endReceiptColumn = new TableColumn<>("To Receipt No");
         endReceiptColumn.setCellValueFactory(new PropertyValueFactory<>("ending_receipt_no"));
+
+        TableColumn<ReceiptSummary, String> modeOfPaymentColumn = new TableColumn<>("Mode of Payment");
+        modeOfPaymentColumn.setCellValueFactory(new PropertyValueFactory<>("mode_of_payment"));
 
         TableColumn<ReceiptSummary, Integer> totalDonationsColumn = new TableColumn<>("Total Receipts");
         totalDonationsColumn.setCellValueFactory(new PropertyValueFactory<>("total_donations"));
@@ -89,7 +103,7 @@ public class SummaryController {
             }
         });
 
-        summary_table.getColumns().addAll(dateColumn, startReceiptColumn, endReceiptColumn, totalDonationsColumn, deletedDonationColumn, totalAmountColumn);
+        summary_table.getColumns().addAll(dateColumn, startReceiptColumn, endReceiptColumn, modeOfPaymentColumn, totalDonationsColumn, deletedDonationColumn, totalAmountColumn);
     }
 
     @FXML
