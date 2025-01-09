@@ -1,13 +1,16 @@
 package com.example.receiptprinting.controllers;
 
+import com.example.receiptprinting.dao.ReceiptDao;
 import com.example.receiptprinting.models.ModeOfPayment;
 import com.example.receiptprinting.models.ReceiptSummary;
+import com.example.receiptprinting.services.JasperReportService;
 import com.example.receiptprinting.utils.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -27,40 +30,36 @@ public class SummaryController {
     @FXML
     ComboBox mode_of_payment;
 
+    ReceiptDao receiptDao;
+
     @FXML
     public void initialize() {
         from_date.requestFocus();
         initializeTableColumns();
+        setupDropdown();
+        addValidations();
+        setupDatePicker();
+        CommonUtils.resizeColumn(summary_table);
+        receiptDao = new ReceiptDao();
+    }
+
+    private void setupDropdown() {
         mode_of_payment.setItems(FXCollections.observableArrayList(ModeOfPayment.values()));
         mode_of_payment.getItems().add("ALL");
         mode_of_payment.setValue("ALL"); // Default value
-        ValidationListeners validationListeners = new ValidationListeners();
-        validationListeners.validateDate(from_date);
-        validationListeners.validateDate(to_date);
+    }
+
+    private void setupDatePicker() {
         CommonUtils.dateConverter(from_date);
         CommonUtils.dateConverter(to_date);
         from_date.setValue(LocalDate.now());
         to_date.setValue(LocalDate.now());
-        //setupPagination();
-        CommonUtils.resizeColumn(summary_table);
     }
 
-    @FXML
-    public void getSummary() throws SQLException {
-
-        if(mode_of_payment.getValue() == null || mode_of_payment.getValue().toString().equalsIgnoreCase("All")) {
-            try {
-                ObservableList<ReceiptSummary> donatorsSummary = DatabaseUtil.getAllDonatorsSummary(from_date.getValue(), to_date.getValue());
-                summary_table.setItems(donatorsSummary);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            ObservableList<ReceiptSummary> donatorsSummaryByMode = DatabaseUtil.getDonatorsSummaryByMode(from_date.getValue(),
-                    to_date.getValue(), mode_of_payment.getValue().toString());
-            summary_table.setItems(donatorsSummaryByMode);
-        }
-
+    private void addValidations() {
+        ValidationListeners validationListeners = new ValidationListeners();
+        validationListeners.validateDate(from_date);
+        validationListeners.validateDate(to_date);
     }
 
     private void initializeTableColumns() {
@@ -106,14 +105,34 @@ public class SummaryController {
         summary_table.getColumns().addAll(dateColumn, startReceiptColumn, endReceiptColumn, modeOfPaymentColumn, totalDonationsColumn, deletedDonationColumn, totalAmountColumn);
     }
 
+
+    @FXML
+    public void getSummary() throws SQLException {
+
+        if(mode_of_payment.getValue() == null || mode_of_payment.getValue().toString().equalsIgnoreCase("All")) {
+            try {
+                ObservableList<ReceiptSummary> donatorsSummary = receiptDao.getAllDonatorsSummary(from_date.getValue(), to_date.getValue());
+                summary_table.setItems(donatorsSummary);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            ObservableList<ReceiptSummary> donatorsSummaryByMode = receiptDao.getDonatorsSummaryByPaymentMode(from_date.getValue(),
+                    to_date.getValue(), mode_of_payment.getValue().toString());
+            summary_table.setItems(donatorsSummaryByMode);
+        }
+
+    }
     @FXML
     public void printSummary() {
-        JasperReportUtil.generateSummary(summary_table, formatDate(from_date.getValue()), formatDate(to_date.getValue()));
+        JasperReportService.generateSummary(summary_table, formatDate(from_date.getValue()), formatDate(to_date.getValue()));
     }
 
     @FXML
     public void exportSummary() throws IOException {
-        new ExcelFileHandler().openFileSelectionWindow(summary_table, "Summary", "Receipt Summary for the Period: " +
+        ExcelFileHandler excelFileHandler = new ExcelFileHandler();
+        FileChooser fileChooser = excelFileHandler.openFileSelectionWindow();
+        excelFileHandler.exportTableViewToExcel(fileChooser,summary_table, "Summary", "Receipt Summary for the Period: " +
                 formatDate(from_date.getValue()) + " To: " + formatDate(to_date.getValue()));
     }
 }

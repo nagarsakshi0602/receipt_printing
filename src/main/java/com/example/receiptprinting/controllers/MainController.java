@@ -1,6 +1,5 @@
 package com.example.receiptprinting.controllers;
 
-import com.example.receiptprinting.utils.DatabaseUtil;
 import com.example.receiptprinting.utils.PropertyFileLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -21,8 +20,8 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        System.out.println("Into intialization phase");
-        DatabaseUtil.initializeDatabase();
+        /*System.out.println("Into intialization phase");
+        DatabaseUtil.initializeDatabase();*/
 
         try {
             propertyFileLoader.loadProperty("config");

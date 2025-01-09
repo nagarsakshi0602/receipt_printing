@@ -1,166 +1,21 @@
 package com.example.receiptprinting.utils;
 
-import com.example.receiptprinting.models.Donators;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.swing.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.InputStream;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
 
 public class JasperReportUtil {
-    public static void generateReceipt(List<Donators> donators) {
-        try {
-
-            JasperReport report = loadJrxmlFile("receipt");
-
-            PropertyFileLoader propertyFileLoader = PropertyFileLoader.getInstance();
-            propertyFileLoader.loadProperty("config");
-
-            Donators donator = donators.get(0);
-
-            HashMap<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("company_name", propertyFileLoader.getProperty("company_name"));
-            parameters.put("company_address", propertyFileLoader.getProperty("company_address"));
-            parameters.put("company_mobile_no", propertyFileLoader.getProperty("company_mobile_no"));
-            parameters.put("established_year", propertyFileLoader.getProperty("established_on_text"));
-            parameters.put("company_email_id", propertyFileLoader.getProperty("company_email_id"));
-            parameters.put("more_info", propertyFileLoader.getProperty("receipt.more_info"));
-            parameters.put("receipt_no", donator.getReceipt_no());
-            parameters.put("mobile_no", donator.getMobile_no());
-            parameters.put("aadhar_no", donator.getAadhar_no());
-
-            //Check if get address not present
-            String name = (donator.getAddress() == null || donator.getAddress().isEmpty())? "": ", "+ donator.getAddress();
-            parameters.put("name", CommonUtils.toProperCase(donator.getName()) + CommonUtils.toProperCase(name));
-            parameters.put("amount", donator.getAmount());
-
-            //Check if Payment details not present
-            String paymentDetails = (donator.getPayment_details() == null || donator.getPayment_details().isEmpty()) ? "" : " - " + donator.getPayment_details();
-            parameters.put("mode_of_payment", donator.getMode_of_payment() + paymentDetails );
-            parameters.put("date", donator.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            parameters.put("remark", CommonUtils.toProperCase(donator.getRemark()));
-
-            //Checking for amount in words overflow
-            String s = CommonUtils.convertToWords(donator.getAmount());
-            String amount_first = null, amount_second = null;
-            if( s.length() > 55){
-                if(s.charAt(55) == ' '){
-                    amount_first = s.substring(0,55);
-                    amount_second = s.substring(56);
-                }else{
-                    String str = s.substring(0, 55);
-                    amount_first = s.substring(0,str.lastIndexOf(" "));
-                    amount_second = s.substring(str.lastIndexOf(" ") + 1);
-                }
-            }else{
-                amount_first = s.substring(0);
-            }
-            parameters.put("amount_in_words", amount_first);
-            parameters.put("amount_second", amount_second);
-            parameters.put("font_color", propertyFileLoader.getProperty("font_color"));
-            parameters.put("border_color", propertyFileLoader.getProperty("border_color"));
-            parameters.put("headerImage", propertyFileLoader.getProperty("header_image_path"));
-
-
-            JasperPrint print = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
-
-            JRViewer viewer = new JRViewer(print);
-            viewer.setZoomRatio(0.5f);
-
-            JFrame frame = new JFrame("Receipt Viewer");
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            // Set desired size for the window (e.g., 800x600)
-            frame.setSize(1000, 600);
-
-            // Center the frame on the screen
-            frame.setLocationRelativeTo(null);
-
-            // Add JRViewer to the frame
-            frame.getContentPane().add(viewer);
-
-            // Make the frame visible
-            frame.setVisible(true);
-
-
-            //JasperExportManager.exportReportToPdfFile(print, "receipt.pdf");
-            System.out.println("receipt generated successfully!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static <T> void generateReport(TableView<T> tableView, String fromDate, String toDate, Double total_amount, Integer total_donations){
-        try{
-            JasperReport report = loadJrxmlFile("report");
-            //Assign table data to JRBean
-            ObservableList<T> items = tableView.getItems();
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(items);
-
-            //Populating parameters from various source
-            PropertyFileLoader propertyFileLoader = PropertyFileLoader.getInstance();
-            HashMap<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("company_name", propertyFileLoader.getProperty("company_name"));
-            parameters.put("header", "Receipt Register for the Period: " + fromDate+" To: " + toDate);
-            parameters.put("reportDataset", dataSource);
-            parameters.put("total_amount_collected", total_amount);
-            parameters.put("no_of_donations", total_donations);
-
-            //Filling data into the report
-            JasperPrint print = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
-            try{
-                //Opening print manager
-                JasperPrintManager.printReport(print, true);
-            }catch (Exception e){
-                //When Printer Not found export to file
-                CommonUtils.showAlert("Print Error", "Printer driver not found. File saved at applications current location");
-                JasperExportManager.exportReportToPdfFile(print, "./report.pdf");
-            }
-
-
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    public static <T> void generateSummary(TableView<T> tableView, String fromDate, String toDate){
-        try{
-            JasperReport report = loadJrxmlFile("summary");
-            //Assign table data to JRBean
-            ObservableList<T> items = tableView.getItems();
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(items);
-
-            //Populating parameters from various source
-            PropertyFileLoader propertyFileLoader = PropertyFileLoader.getInstance();
-            HashMap<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("company_name", propertyFileLoader.getProperty("company_name"));
-            parameters.put("header", "Receipt Summary for the Period: " + fromDate+" To: " + toDate);
-            parameters.put("summaryDataset", dataSource);
-
-            //Filling data into the report
-            JasperPrint print = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
-            try{
-                //Opening print manager
-                JasperPrintManager.printReport(print, true);
-            }catch (Exception e){
-                //When Printer Not found export to file
-                CommonUtils.showAlert("Print Error", "Printer driver not found. File saved at applications current location");
-                JasperExportManager.exportReportToPdfFile(print, "./summary.pdf");
-            }
-
-
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
     public static JasperReport loadJrxmlFile(String filename){
         JasperReport report = null;
@@ -179,4 +34,107 @@ public class JasperReportUtil {
         }
         return report;
     }
+
+    public static void receiptViewer(JasperPrint print, JRViewer viewer) {
+        // Create a JFrame to hold the JRViewer
+        JFrame frame = new JFrame("Receipt Viewer");
+        frame.getContentPane().add(viewer);
+        frame.setSize(1000, 600);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Add a custom print button to the JFrame
+        JButton printButton = new JButton("Print");
+        printButton.setPreferredSize(new Dimension(100, 25));
+        printButton.setBorder(new LineBorder(Color.BLACK, 1));
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(printButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        System.out.println("receipt generated successfully!");
+
+        //Customizing printer setting with default copies
+        //customPrinterSetting(print, printButton, frame);
+
+        frame.setVisible(true);
+    }
+
+    private static JButton getPrintButton(JasperViewer viewer) {
+        JButton jButton = null;
+        for(Component component: viewer.getContentPane().getComponents()){
+            if(component instanceof JPanel){
+                JPanel panel = (JPanel) ((JPanel) component).getComponent(0);
+                for(Component c : panel.getComponents()){
+                    Component[] jp =  ((JPanel) c).getComponents();
+                    for(Component j: jp){
+                        if(j instanceof JButton){
+                            if(((JButton) j).getToolTipText().equalsIgnoreCase("Print")){
+                                jButton = (JButton) j;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return jButton;
+    }
+
+
+    public static void customPrinterSetting(JasperPrint print, JasperViewer viewer){
+        JButton printButton = getPrintButton(viewer);
+        printButton.addActionListener(e -> {
+            try {
+                // Default number of copies
+                int defaultCopies = 2;
+
+                // Get the default printer
+                PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
+
+                if (printService != null) {
+                    // Create a PrinterJob for customized print settings
+                    PrinterJob printerJob = PrinterJob.getPrinterJob();
+                    printerJob.setPrintService(printService);
+                    printerJob.setCopies(2);
+                    // Set print attributes (number of copies)
+                    if(printerJob.printDialog()){
+                        printerJob.setCopies(defaultCopies);
+                        printerJob.setPrintable(new JasperPrintable(print));
+                        printerJob.print();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(viewer, "No printer found.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (PrinterException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(viewer, "An error occurred during printing: " + ex.getMessage(),
+                       "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+    }
+
+    // Helper class to render the JasperPrint content to a Printable object
+    public static class JasperPrintable implements Printable {
+        private JasperPrint jasperPrint;
+
+        public JasperPrintable(JasperPrint jasperPrint) {
+            this.jasperPrint = jasperPrint;
+        }
+
+        @Override
+        public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+            if (pageIndex >= jasperPrint.getPages().size()) {
+                return NO_SUCH_PAGE;
+            }
+
+            // Render the page using JasperReports rendering engine
+            try {
+                JasperPrintManager.printPage(jasperPrint, pageIndex, true);
+            } catch (JRException e) {
+                throw new RuntimeException(e);
+            }
+            return PAGE_EXISTS;
+        }
+    }
+
 }

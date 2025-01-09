@@ -46,6 +46,9 @@
 	<parameter name="reportDataset" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="no_of_donations" class="java.lang.Integer"/>
 	<parameter name="total_amount_collected" class="java.lang.Double"/>
+	<parameter name="total_cash_collected" class="java.lang.Double"/>
+	<parameter name="total_cheque_collected" class="java.lang.Double"/>
+	<parameter name="total_online_collected" class="java.lang.Double"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -75,7 +78,7 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="237" splitType="Stretch">
+		<band height="203" splitType="Stretch">
 			<componentElement>
 				<reportElement x="2" y="0" width="550" height="200" uuid="4077412f-2c6b-4770-924c-a765c9ff3a81">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
@@ -214,29 +217,29 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="41" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="53" splitType="Stretch">
+		<band height="98" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="10" width="130" height="30" uuid="aa454757-2b26-440f-a9cf-7e1f1d31f9cb"/>
+				<reportElement x="280" y="10" width="130" height="20" uuid="aa454757-2b26-440f-a9cf-7e1f1d31f9cb"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<text><![CDATA[Total Amount Collected]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="11" width="130" height="30" uuid="34265f83-0464-472a-b754-a6486240bee5"/>
+				<reportElement x="0" y="10" width="138" height="20" uuid="34265f83-0464-472a-b754-a6486240bee5"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
 				<text><![CDATA[Total Number of Donations]]></text>
 			</staticText>
-			<textField textAdjust="ScaleFont" pattern="#.00#;(#.00#)">
-				<reportElement x="130" y="10" width="110" height="30" uuid="66872549-ed13-41d8-a2d3-97fb54103dc5"/>
+			<textField textAdjust="ScaleFont" pattern="#0.00#;(#0.00#)">
+				<reportElement x="410" y="10" width="110" height="20" uuid="66872549-ed13-41d8-a2d3-97fb54103dc5"/>
 				<box padding="1">
 					<pen lineWidth="0.25"/>
 				</box>
@@ -246,7 +249,7 @@
 				<textFieldExpression><![CDATA[$P{total_amount_collected}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="470" y="10" width="82" height="30" uuid="0d19445b-32ec-4534-b5a6-3a11b4acb8f8"/>
+				<reportElement x="138" y="10" width="60" height="20" uuid="0d19445b-32ec-4534-b5a6-3a11b4acb8f8"/>
 				<box padding="1">
 					<pen lineWidth="0.25"/>
 				</box>
@@ -254,6 +257,63 @@
 					<font fontName="Times New Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{no_of_donations}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="30" width="130" height="20" uuid="8774c8b0-da7a-4e82-9aac-af9a35ff5deb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Total Cash Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="50" width="130" height="20" uuid="d621b77e-04ac-4cc3-8d84-5735391a8e6e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Total Cheque Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="70" width="130" height="20" uuid="b2027276-8c16-4ace-b0f0-7828a8bc7285">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Total Online Amount]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" pattern="#0.00#;(#0.00#)">
+				<reportElement x="410" y="30" width="110" height="20" uuid="ab5dfcab-341a-4dab-8ef8-9acb0278dd27"/>
+				<box padding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_cash_collected}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="#0.00#;(#0.00#)">
+				<reportElement x="410" y="50" width="110" height="20" uuid="e04ae6aa-c67a-4912-8c0e-0a1bd373e66e"/>
+				<box padding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_cheque_collected}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="#0.00#;(#0.00#)">
+				<reportElement x="410" y="70" width="110" height="20" uuid="a0b88d64-120b-4834-afb2-1de3642a1d3c"/>
+				<box padding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_online_collected}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

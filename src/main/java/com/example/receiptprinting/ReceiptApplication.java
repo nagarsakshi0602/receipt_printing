@@ -1,6 +1,7 @@
 package com.example.receiptprinting;
 
 import com.example.receiptprinting.utils.CommonUtils;
+import com.example.receiptprinting.utils.DatabaseInitializer;
 import com.example.receiptprinting.utils.PropertyFileLoader;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -29,6 +30,8 @@ public class ReceiptApplication extends Application {
         }
         System.out.println("H2 Console started at http://localhost:" + port);
 
+        //Initializing Database
+        DatabaseInitializer.initializeDatabase();
 
         //Loading FXML file to create the application window
         FXMLLoader fxmlLoader = new FXMLLoader(ReceiptApplication.class.getResource("Main.fxml"));

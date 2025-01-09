@@ -67,5 +67,6 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
+      <Button fx:id="export_all_columns" layoutX="251.0" layoutY="421.0" mnemonicParsing="false" onAction="#exportAllColumns" prefHeight="25.0" prefWidth="124.0" text="Export All Columns" />
    </children>
 </AnchorPane>

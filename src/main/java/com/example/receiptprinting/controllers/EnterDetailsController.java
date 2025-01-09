@@ -1,8 +1,14 @@
 package com.example.receiptprinting.controllers;
 
+import com.example.receiptprinting.dao.ReceiptDao;
 import com.example.receiptprinting.models.Donators;
 import com.example.receiptprinting.models.ModeOfPayment;
-import com.example.receiptprinting.utils.*;
+import com.example.receiptprinting.services.DonatorService;
+import com.example.receiptprinting.services.JasperReportService;
+import com.example.receiptprinting.utils.CommonUtils;
+import com.example.receiptprinting.utils.KeyboardHandler;
+import com.example.receiptprinting.utils.PropertyFileLoader;
+import com.example.receiptprinting.utils.ValidationListeners;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -15,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EnterDetailsController{
+public class EnterDetailsController {
 
     @FXML
     private TextField receipt_no, name, address, mobile_no, email_id, amount, aadhar_no, remark, payment_details;
@@ -31,17 +37,23 @@ public class EnterDetailsController{
     public static Donators donators;
     public static String receiptNew;
     private final ValidationListeners validationListeners = new ValidationListeners();
+    private DonatorService donatorService;
+    private ReceiptDao receiptDao;
     String isAdvancedValidation;
     private DateTimeFormatter dateFormatter;
 
 
     @FXML
     public void initialize() {
+        donatorService = new DonatorService();
+        setupUI();
+    }
+
+    private void setupUI() {
         save.setDisable(true);
         Platform.runLater(() -> reset.requestFocus());
         mode_of_payment.setItems(FXCollections.observableArrayList(ModeOfPayment.values()));
         dateFormatter = CommonUtils.dateConverter(date);
-
         isAdvancedValidation = PropertyFileLoader.getInstance().getProperty("advanced_validation");
         initializeKeyboardHandlers();
         addValidationListeners();
@@ -50,12 +62,7 @@ public class EnterDetailsController{
     @FXML
     public void newDonator() {
         clearFields();
-        if(DatabaseUtil.getLastReceiptId() == 0){
-            receiptNew = PropertyFileLoader.getInstance().getProperty("starting_id");
-        }
-        else{
-            receiptNew = String.valueOf( DatabaseUtil.getLastReceiptId());
-        }
+        receiptNew = String.valueOf(getNewReceiptId());
 
         receipt_no.setDisable(true);
         save.setDisable(false);
@@ -119,7 +126,7 @@ public class EnterDetailsController{
 
         int id = Integer.parseInt(receipt_no.getText());
         try {
-            donators = DatabaseUtil.getDonatorsReport(id);
+            donators = donatorService.getDonatorById(id);
             if (donators == null) {
                 CommonUtils.showAlert("Record Not Found", "Record with this receipt no. : " + id + " not found");
             } else {
@@ -144,12 +151,12 @@ public class EnterDetailsController{
         int id = Integer.parseInt(receipt_no.getText());
         List donator_list = new ArrayList<>();
         try {
-            Donators donators = DatabaseUtil.getDonatorsReport(id);
+            Donators donators = donatorService.getDonatorById(id);
             if (donators == null) {
                 CommonUtils.showAlert("Record Error", "Record with this id: " + id + " not found");
             } else {
                 donator_list.add(donators);
-                JasperReportUtil.generateReceipt(donator_list);
+                JasperReportService.generateReceipt(donator_list);
             }
         } catch (SQLException e) {
             CommonUtils.showAlert("Database Error", "Unable to connect to database");
@@ -162,7 +169,7 @@ public class EnterDetailsController{
         String id = receipt_no.getText();
         if (id != null) {
             try {
-                DatabaseUtil.deleteDonator(id);
+                donatorService.deleteDonator(Integer.parseInt(id));
                 clearFields();
                 receipt_no.setText("");
                 CommonUtils.showAlert("Delete Successful", "Record with id: " + id + " is deleted successfully");
@@ -175,6 +182,16 @@ public class EnterDetailsController{
 
     }
 
+    private int getNewReceiptId() {
+        try {
+            int lastReceiptId = donatorService.getLastReceiptId();
+            return lastReceiptId == 0 ? Integer.parseInt(PropertyFileLoader.getInstance().getProperty("starting_id")) : lastReceiptId;
+        } catch (SQLException e) {
+            CommonUtils.showAlert("Error", "Error fetching last receipt ID.");
+            return 0;
+        }
+    }
+
     private boolean isRequiredFieldPresent() {
         return validationListeners.isNotEmpty(name.getText()) && validationListeners.isNotEmpty(amount.getText())
                 && mode_of_payment.getValue() != null && date.getValue() != null;
@@ -185,10 +202,10 @@ public class EnterDetailsController{
         errorLabel.setText("");
         errorLabel.setVisible(false);
         boolean isValid;
-        if(Double.parseDouble(amount.getText()) > 2000.00){
+        if (Double.parseDouble(amount.getText()) > Double.parseDouble(PropertyFileLoader.getInstance().getProperty("amount_cap"))) {
             isValid = validationListeners.isNotEmpty(aadhar_no.getText());
-            if(!isValid){
-                CommonUtils.showError("Aadhar/PAN Required for Amount greater than 2000", errorLabel);
+            if (!isValid) {
+                CommonUtils.showError("Aadhar/PAN Required for Amount greater than " + PropertyFileLoader.getInstance().getProperty("amount_cap"), errorLabel);
                 return true;
             }
         }
@@ -248,6 +265,7 @@ public class EnterDetailsController{
         validationListeners.restrictToAlphabetsAndSpaces(name);
         validationListeners.validateDate(date);
         validationListeners.enablePaymentDetails(mode_of_payment, payment_details);
+        validationListeners.restrictToCapitalsAndNumbers(aadhar_no);
 
     }
 
@@ -265,13 +283,11 @@ public class EnterDetailsController{
     }
 
     private void update() {
-        donators = new Donators(name.getText(), address.getText(), email_id.getText(), mobile_no.getText(),
-                Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), payment_details.getText(),
-                date.getValue(), aadhar_no.getText(), remark.getText());
+        donators = createDonatorFromFields();
 
         if (isFormValid()) return;
         try {
-            DatabaseUtil.update(donators, Integer.parseInt(receipt_no.getText()));
+            donatorService.updateDonator(donators, Integer.parseInt(receipt_no.getText()));
             if (CommonUtils.confirmationAlert("Print Confirmation", "Do you want to print updated receipt?")) {
                 generateReceipt();
             }
@@ -284,16 +300,14 @@ public class EnterDetailsController{
     }
 
     private void save() {
-        donators = new Donators(name.getText(), address.getText(), email_id.getText(), mobile_no.getText(),
-                Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), payment_details.getText(),
-                date.getValue(), aadhar_no.getText(), remark.getText());
+        donators = createDonatorFromFields();
 
         if (isFormValid()) {
             return;
         }
 
         try {
-            DatabaseUtil.insertDonators(donators);
+            donatorService.saveDonator(donators);
             if (CommonUtils.confirmationAlert("Print Confirmation", "Do you want to print receipt?")) {
                 generateReceipt();
             }
@@ -306,6 +320,12 @@ public class EnterDetailsController{
             e.printStackTrace();
             CommonUtils.showAlert("Database Error", "Could not save data.");
         }
+    }
+
+    private Donators createDonatorFromFields() {
+        return new Donators(name.getText(), address.getText(), email_id.getText(), mobile_no.getText(),
+                Double.parseDouble(amount.getText()), mode_of_payment.getValue().toString(), payment_details.getText(),
+                date.getValue(), aadhar_no.getText(), remark.getText());
     }
 
 }

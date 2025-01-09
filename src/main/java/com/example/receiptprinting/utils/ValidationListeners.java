@@ -4,12 +4,14 @@ import com.example.receiptprinting.models.ModeOfPayment;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 
 public class ValidationListeners {
@@ -45,75 +47,37 @@ public class ValidationListeners {
         });
     }
 
-  /*  public void addNameValidation(TextField nameField, Label errorLabel) {
-
-        nameField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-
-            boolean isValid = !newValue.toString().trim().isEmpty() && newValue.toString().matches("[a-zA-Z\\s]+");
-            fieldValidityMap.put(nameField, isValid);
-
-            if (isValid) {
-                errorLabel.setText("");
-            } else {
-                errorLabel.setText("Invalid name. Only letters and spaces are allowed.");
-                errorLabel.setStyle("-fx-text-fill: red;");
+    public void restrictToCapitalsAndNumbers(TextField textField){
+        // Create a TextFormatter to convert lowercase to uppercase and allow numbers
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String input = change.getText();
+            // Convert lowercase letters to uppercase
+            if (input.matches("[a-z0-9]*")) {
+                change.setText(input.toUpperCase());
+                return change;
             }
-        });
-        fieldValidityMap.put(nameField, false);
+            // Reject any other input
+            if (!input.isEmpty()) {
+                return null;
+            }
+            return change;
+        };
+        // Apply the TextFormatter to the TextField
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        textField.setTextFormatter(textFormatter);
 
-    }*/
+    }
 
     public boolean isEmailValid(TextField emailField) {
-        //AtomicBoolean isValid = new AtomicBoolean(false);
-        boolean isValid = emailField.getText().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
-        //emailField.textProperty().addListener((observable, oldValue, newValue) -> {
-
-        // isValid.set(newValue.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"));
-        /*if (isValid) {
-            errorLabel.setText("");
-        } else {
-            errorLabel.setText("Invalid email address. Valid format: example@abc.com");
-            errorLabel.setStyle("-fx-text-fill: red;");
-
-        }
-        // });*/
-        return isValid;
-
+       return   emailField.getText().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
     }
 
     public boolean isPhoneNumberValid(TextField phoneField) {
-        //phoneField.textProperty().addListener((observable, oldValue, newValue) -> {
-        boolean isValid = phoneField.getText().matches("\\d{10,15}");
-         /*   fieldValidityMap.put(phoneField, isValid);
-
-            if (isValid) {
-                errorLabel.setText("");
-            } else {
-                errorLabel.setText("Invalid phone number. Must be 10 digits or with country code");
-                errorLabel.setStyle("-fx-text-fill: red;");
-            }
-        });
-
-        fieldValidityMap.put(phoneField, false);*/
-        return isValid;
+        return  phoneField.getText().matches("\\d{10,15}");
     }
 
     public boolean isAadharValid(TextField aadharField) {
-        //aadharField.textProperty().addListener((observable, oldValue, newValue) -> {
-
-        boolean isValid = aadharField.getText().matches("\\d{12}");
-            /*fieldValidityMap.put(aadharField, isValid);
-
-            if (isValid) {
-                errorLabel.setText("");
-            } else {
-                errorLabel.setText("Invalid Aadhar. Digits are less than 12");
-                errorLabel.setStyle("-fx-text-fill: red;");
-            }
-        });
-
-        fieldValidityMap.put(aadharField, false);*/
-        return isValid;
+       return aadharField.getText().matches("\\d{12}");
     }
 
     // Method to restrict TextField to a maximum length
@@ -124,9 +88,6 @@ public class ValidationListeners {
             }
         });
     }
-
-
-    // Validate all fields in the form
 
     // Validate non-empty text
     public boolean isNotEmpty(String value) {

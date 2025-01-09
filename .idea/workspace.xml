@@ -10,22 +10,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="abc071e7-c0ea-46fa-8c0f-03714e94a9f0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/services/JasperReportService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/donators_db.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/donators_db.mv.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/donators_db.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/donators_db.trace.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/report.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/ReceiptApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/ReceiptApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/ReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/ReportController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/SummaryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/SummaryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/models/ReceiptSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/models/ReceiptSummary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/CommonUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/DatabaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/DatabaseUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/ExcelFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/ExcelFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/JasperReportUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/JasperReportUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/EnterDetails.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/EnterDetails.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/ValidationListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/ValidationListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/Report.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/Report.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/Summary.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/Summary.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/report.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/report.jrxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/summary.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/receiptprinting/summary.jrxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +109,7 @@
       <module name="ReceiptPrinting" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.receiptprinting.utils.*" />
+          <option name="PATTERN" value="com.example.receiptprinting.services.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -219,152 +222,152 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>188</line>
+          <line>205</line>
           <option name="timeStamp" value="163" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>189</line>
+          <line>206</line>
           <option name="timeStamp" value="164" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>190</line>
+          <line>207</line>
           <option name="timeStamp" value="165" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>191</line>
+          <line>208</line>
           <option name="timeStamp" value="166" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>187</line>
+          <line>204</line>
           <option name="timeStamp" value="168" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>290</line>
+          <line>304</line>
           <option name="timeStamp" value="169" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>291</line>
+          <line>305</line>
           <option name="timeStamp" value="170" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>295</line>
+          <line>309</line>
           <option name="timeStamp" value="173" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>296</line>
+          <line>310</line>
           <option name="timeStamp" value="174" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>71</line>
+          <line>78</line>
           <option name="timeStamp" value="176" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>194</line>
+          <line>211</line>
           <option name="timeStamp" value="177" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>195</line>
+          <line>212</line>
           <option name="timeStamp" value="178" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>196</line>
+          <line>213</line>
           <option name="timeStamp" value="179" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>197</line>
+          <line>214</line>
           <option name="timeStamp" value="180" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>198</line>
+          <line>215</line>
           <option name="timeStamp" value="181" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>201</line>
+          <line>218</line>
           <option name="timeStamp" value="182" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>202</line>
+          <line>219</line>
           <option name="timeStamp" value="183" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>204</line>
+          <line>221</line>
           <option name="timeStamp" value="184" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>203</line>
+          <line>220</line>
           <option name="timeStamp" value="185" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>205</line>
+          <line>222</line>
           <option name="timeStamp" value="186" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>70</line>
+          <line>77</line>
           <option name="timeStamp" value="187" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>293</line>
+          <line>307</line>
           <option name="timeStamp" value="188" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>292</line>
+          <line>306</line>
           <option name="timeStamp" value="189" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/utils/CommonUtils.java</url>
-          <line>239</line>
+          <line>178</line>
           <option name="timeStamp" value="198" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>215</line>
+          <line>232</line>
           <option name="timeStamp" value="199" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>217</line>
+          <line>234</line>
           <option name="timeStamp" value="200" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>216</line>
+          <line>233</line>
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>184</line>
+          <line>201</line>
           <option name="timeStamp" value="202" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>185</line>
+          <line>202</line>
           <option name="timeStamp" value="203" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/receiptprinting/controllers/EnterDetailsController.java</url>
-          <line>183</line>
+          <line>200</line>
           <properties class="com.example.receiptprinting.controllers.EnterDetailsController" method="isFormValid">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

@@ -20,4 +20,6 @@ module com.example.recieptprinting {
     opens com.example.receiptprinting.controllers to java.sql, javafx.fxml;
     exports com.example.receiptprinting.models;
     opens com.example.receiptprinting.models to java.sql, javafx.fxml, javafx.base;
+    exports com.example.receiptprinting.services;
+    opens com.example.receiptprinting.services to java.sql, javafx.fxml;
 }
